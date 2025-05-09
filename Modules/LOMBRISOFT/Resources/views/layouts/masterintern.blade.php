@@ -86,7 +86,7 @@
     <div class="wrapper">
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__wobble" src="{{ asset('images/images.png') }}" alt="AdminLTELogo" height="100" width="150">
+            <img class="animation__wobble" src="{{ asset('./adminLTE/dist/img/logoS.png') }}" alt="AdminLTELogo" height="100" width="150">
         </div>
 
         <nav class="main-header navbar navbar-expand navbar-dark">

@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('AdminLTE/plugins/fontawesome-free/css/all.min.css') }}">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="{{ asset('AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <!-- AdminLTE style -->
     <link rel="stylesheet" href="{{ asset('AdminLTE/dist/css/adminlte.min.css') }}">
 
@@ -20,86 +18,111 @@
         :root {
             --sena-green: #39B54A;
             --sena-dark-green: #2E8B3E;
-            --sena-light-green: #D1E7DD;
+            --sena-light-green: #E8F5E9;
             --sena-white: #FFFFFF;
-            --sena-light-gray: #F8F9FA;
+            --sena-light-gray: #F5F5F5;
         }
         
         body {
             background-color: var(--sena-light-gray);
+            font-family: 'Source Sans Pro', sans-serif;
         }
         
         .navbar-dark {
             background-color: var(--sena-dark-green) !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .brand-text {
             color: var(--sena-white) !important;
-            font-weight: bold;
+            font-weight: 600;
         }
         
         .main-footer {
             background-color: var(--sena-dark-green) !important;
             color: var(--sena-white) !important;
+            padding: 1rem 0;
+            font-size: 0.9rem;
         }
         
         .btn-sena {
             background-color: var(--sena-green);
             border-color: var(--sena-dark-green);
             color: white;
+            transition: all 0.3s ease;
         }
         
         .btn-sena:hover {
             background-color: var(--sena-dark-green);
-            border-color: var(--sena-green);
             color: white;
-        }
-        
-        .card-sena {
-            border-top: 3px solid var(--sena-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         
         .welcome-header {
             background: linear-gradient(135deg, var(--sena-green) 0%, var(--sena-dark-green) 100%);
             color: white;
-            padding: 2rem;
-            border-radius: 0.25rem;
+            padding: 2.5rem 1rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0;
         }
         
         .feature-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-left: 4px solid var(--sena-green);
+            transition: transform 0.3s ease;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            height: 100%;
         }
         
         .feature-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
         
         .feature-icon {
             color: var(--sena-green);
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 1rem;
         }
         
         .nav-link.active {
-            background-color: var(--sena-light-green) !important;
-            color: var(--sena-dark-green) !important;
-            font-weight: bold;
+            border-bottom: 3px solid var(--sena-green);
+            font-weight: 600;
         }
         
-        .search-box {
+        .content-wrapper {
+            background-color: transparent;
+        }
+        
+        .quick-access-item {
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+        }
+        
+        .quick-access-item:hover {
             border-color: var(--sena-green);
+            transform: translateY(-3px);
+        }
+        
+        /* Simplificación de elementos */
+        .navbar-search-block {
+            display: none;
         }
         
         .dropdown-menu {
-            border: 1px solid var(--sena-light-green);
+            min-width: 220px;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         
-        .dropdown-item:hover {
-            background-color: var(--sena-light-green);
+        .card-sena {
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .preloader {
+            background-color: var(--sena-white);
         }
     </style>
 
@@ -111,25 +134,25 @@
 <body class="layout-top-nav">
 <div class="wrapper">
 
-    <!-- Preloader -->
+    <!-- Preloader simplificado -->
     <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__wobble" src="{{ asset('images/images.png') }}" alt="AdminLTELogo" height="100" width="150">
+        <img src="{{ asset('./adminLTE/dist/img/logoS.png') }}" alt="SENA Logo" height="80">
     </div>
 
-    <!-- Navbar -->
+    <!-- Navbar más limpio -->
     <nav class="main-header navbar navbar-expand-md navbar-dark">
         <div class="container">
-            <a href="#" class="navbar-brand">
-                <img src="{{ asset('images/Favicon2.png') }}" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8; width: 30px;">
-                <span class="brand-text">Lombricultivo SENA</span>
+            <a href="#" class="navbar-brand d-flex align-items-center">
+              
+                <span class="brand-text ml-2">Lombricultivo SENA</span>
             </a>
 
-            <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse order-3" id="navbarCollapse">
-                <ul class="navbar-nav">
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <a href="#" class="nav-link active">Inicio</a>
                     </li>
@@ -139,156 +162,92 @@
                     <li class="nav-item">
                         <a href="#" class="nav-link">Documentación</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Contacto</a>
-                    </li>
                     @if(Auth::check() && checkRol('lombrisoft.admin'))
-                    <li class="nav-item d-none d-sm-inline-block">
-                        <a href="{{ route('lombrisoft.admin.welcome') }}" class="nav-link @if (Route::is('lombrisoft.admin.*')) active @endif">Administración</a>
+                    <li class="nav-item">
+                        <a href="{{ route('lombrisoft.admin.welcome') }}" class="nav-link @if (Route::is('lombrisoft.admin.*')) active @endif">Admin</a>
                     </li>
                     @endif
                     @if(Auth::check() && checkRol('lombrisoft.intern'))
-                    <li class="nav-item d-none d-sm-inline-block">
+                    <li class="nav-item">
                         <a href="{{ route('lombrisoft.intern.paneli') }}" class="nav-link @if (Route::is('lombrisoft.intern.*')) active @endif">Pasante</a>
                     </li>
                     @endif
+                    
+                    <!-- User Dropdown simplificado -->
+                    <li class="nav-item dropdown ml-md-2">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                            <i class="fas fa-user-circle mr-1"></i>
+                            <span class="d-none d-md-inline">{{ Auth::user()->name ?? 'Usuario' }}</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                        
+                       
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
                 </ul>
             </div>
-
-            <!-- Right navbar -->
-            <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-                <!-- Search -->
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                        <i class="fas fa-search"></i>
-                    </a>
-                    <div class="navbar-search-block">
-                        <form class="form-inline">
-                            <div class="input-group input-group-sm search-box">
-                                <input class="form-control form-control-navbar" type="search" placeholder="Buscar..." aria-label="Buscar">
-                                <div class="input-group-append">
-                                    <button class="btn btn-navbar" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </li>
-
-                <!-- Notifications -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-bell"></i>
-                        <span class="badge badge-warning navbar-badge">3</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">3 Notificaciones</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-seedling mr-2 text-green"></i> Nueva actividad programada
-                            <span class="float-right text-muted text-sm">12 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-tint mr-2 text-blue"></i> Recordatorio de riego
-                            <span class="float-right text-muted text-sm">1 hora</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-clipboard-check mr-2 text-orange"></i> Reporte mensual listo
-                            <span class="float-right text-muted text-sm">2 días</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">Ver todas las notificaciones</a>
-                    </div>
-                </li>
-
-                <!-- User Dropdown -->
-                <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-                        <i class="fas fa-user-circle mr-1"></i>
-                        <span class="d-none d-md-inline">{{ Auth::user()->name ?? 'Usuario' }}</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-user mr-2"></i> Perfil
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-cog mr-2"></i> Configuración
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
-                        </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                    </div>
-                </li>
-            </ul>
         </div>
     </nav>
 
     <!-- Content -->
-    <div class="content-wrapper" style="min-height: calc(100vh - 130px);">
+    <div class="content-wrapper">
         <div class="content">
             <div class="container">
-                <!-- Sección de Bienvenida Mejorada -->
+                <!-- Sección de Bienvenida más limpia -->
                 <section class="welcome-header text-center">
-                    <h1 class="display-4"><i class="fas fa-seedling mr-2"></i> Bienvenido al Sistema de Lombricultivo</h1>
-                    <p class="lead">Herramienta integral para la gestión de unidades de producción de humus de lombriz</p>
-                    <div class="mt-4">
+                    <h1 class="mb-3" style="font-weight: 600;">Sistema de Gestión de Lombricultivo</h1>
+                    <p class="lead mb-4">Herramienta profesional para la producción de humus de lombriz</p>
+                    <div class="mt-3">
                         <a href="#" class="btn btn-light btn-lg mr-2">
-                            <i class="fas fa-play-circle mr-1"></i> Tutorial Inicial
-                        </a>
-                        <a href="#" class="btn btn-outline-light btn-lg">
-                            <i class="fas fa-book mr-1"></i> Manual de Usuario
+                            <i class="fas fa-play-circle mr-1"></i> Tutorial
                         </a>
                     </div>
                 </section>
 
-                <!-- Tarjetas de Características -->
+                <!-- Tarjetas de Características simplificadas -->
                 <div class="row">
                     <div class="col-md-4 mb-4">
-                        <div class="card feature-card h-100">
+                        <div class="card feature-card">
                             <div class="card-body text-center">
                                 <div class="feature-icon">
                                     <i class="fas fa-chart-line"></i>
                                 </div>
-                                <h4 class="card-title">Monitoreo en Tiempo Real</h4>
-                                <p class="card-text">Seguimiento continuo de parámetros críticos para la producción óptima de humus.</p>
-                                <a href="#" class="btn btn-sena">Explorar <i class="fas fa-arrow-right ml-1"></i></a>
+                                <h5>Monitoreo</h5>
+                                <p class="text-muted">Seguimiento de parámetros críticos para producción óptima.</p>
+                                <a href="#" class="btn btn-sena btn-sm">Explorar</a>
                             </div>
                         </div>
                     </div>
                     
                     <div class="col-md-4 mb-4">
-                        <div class="card feature-card h-100">
+                        <div class="card feature-card">
                             <div class="card-body text-center">
                                 <div class="feature-icon">
-                                    <i class="fas fa-clipboard-check"></i>
+                                    <i class="fas fa-tasks"></i>
                                 </div>
-                                <h4 class="card-title">Gestión de Actividades</h4>
-                                <p class="card-text">Programación y control de todas las tareas relacionadas con el lombricultivo.</p>
-                                <a href="#" class="btn btn-sena">Gestionar <i class="fas fa-arrow-right ml-1"></i></a>
+                                <h5>Actividades</h5>
+                                <p class="text-muted">Programación y control de tareas del lombricultivo.</p>
+                                <a href="#" class="btn btn-sena btn-sm">Gestionar</a>
                             </div>
                         </div>
                     </div>
                     
                     <div class="col-md-4 mb-4">
-                        <div class="card feature-card h-100">
+                        <div class="card feature-card">
                             <div class="card-body text-center">
                                 <div class="feature-icon">
                                     <i class="fas fa-file-alt"></i>
                                 </div>
-                                <h4 class="card-title">Reportes Automatizados</h4>
-                                <p class="card-text">Generación de informes detallados para análisis y toma de decisiones.</p>
-                                <a href="#" class="btn btn-sena">Ver Reportes <i class="fas fa-arrow-right ml-1"></i></a>
+                                <h5>Reportes</h5>
+                                <p class="text-muted">Informes detallados para análisis y decisiones.</p>
+                                <a href="#" class="btn btn-sena btn-sm">Ver</a>
                             </div>
                         </div>
                     </div>
@@ -297,42 +256,42 @@
                 <!-- Contenido Principal -->
                 @yield('content')
                 
-                <!-- Sección de Acceso Rápido -->
-                <div class="card card-sena mt-4">
-                    <div class="card-header bg-white">
-                        <h3 class="card-title"><i class="fas fa-bolt text-green mr-2"></i>Acceso Rápido</h3>
+                <!-- Sección de Acceso Rápido más limpia -->
+                <div class="card card-sena mt-4 mb-5">
+                    <div class="card-header bg-white border-0">
+                        <h5 class="mb-0"><i class="fas fa-bolt text-green mr-2"></i>Acceso Rápido</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body pt-0">
                         <div class="row text-center">
                             <div class="col-md-3 col-6 mb-3">
-                                <a href="#" class="text-decoration-none">
-                                    <div class="p-3 border rounded hover-shadow">
-                                        <i class="fas fa-tint fa-2x text-primary mb-2"></i>
-                                        <h6>Control de Humedad</h6>
+                                <a href="#" class="text-decoration-none text-dark">
+                                    <div class="p-3 quick-access-item">
+                                        <i class="fas fa-tint fa-lg text-primary mb-2"></i>
+                                        <div>Humedad</div>
                                     </div>
                                 </a>
                             </div>
                             <div class="col-md-3 col-6 mb-3">
-                                <a href="#" class="text-decoration-none">
-                                    <div class="p-3 border rounded hover-shadow">
-                                        <i class="fas fa-utensils fa-2x text-success mb-2"></i>
-                                        <h6>Registro de Alimentación</h6>
+                                <a href="#" class="text-decoration-none text-dark">
+                                    <div class="p-3 quick-access-item">
+                                        <i class="fas fa-utensils fa-lg text-success mb-2"></i>
+                                        <div>Alimentación</div>
                                     </div>
                                 </a>
                             </div>
                             <div class="col-md-3 col-6 mb-3">
-                                <a href="#" class="text-decoration-none">
-                                    <div class="p-3 border rounded hover-shadow">
-                                        <i class="fas fa-temperature-low fa-2x text-warning mb-2"></i>
-                                        <h6>Monitoreo de Temperatura</h6>
+                                <a href="#" class="text-decoration-none text-dark">
+                                    <div class="p-3 quick-access-item">
+                                        <i class="fas fa-thermometer-half fa-lg text-warning mb-2"></i>
+                                        <div>Temperatura</div>
                                     </div>
                                 </a>
                             </div>
                             <div class="col-md-3 col-6 mb-3">
-                                <a href="#" class="text-decoration-none">
-                                    <div class="p-3 border rounded hover-shadow">
-                                        <i class="fas fa-box-open fa-2x text-info mb-2"></i>
-                                        <h6>Registro de Cosecha</h6>
+                                <a href="#" class="text-decoration-none text-dark">
+                                    <div class="p-3 quick-access-item">
+                                        <i class="fas fa-box-open fa-lg text-info mb-2"></i>
+                                        <div>Cosecha</div>
                                     </div>
                                 </a>
                             </div>
@@ -343,53 +302,36 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="main-footer text-center">
-        <strong>Sistema de Gestión de Lombricultivo &copy; {{ date('Y') }} 
-            <a href="#" class="text-white">SENA</a>.
-        </strong> Todos los derechos reservados.
-        <div class="d-block mt-1">
-            <b>Versión</b> 1.0.0 | <i class="fas fa-calendar-alt mr-1"></i> {{ now()->format('d/m/Y') }}
+    <!-- Footer simplificado -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">Sistema de Gestión de Lombricultivo &copy; {{ date('Y') }} SENA</p>
+                    <small class="text-white-50">v1.0.0 | {{ now()->format('d/m/Y') }}</small>
+                </div>
+            </div>
         </div>
     </footer>
 </div>
 
 <!-- Scripts -->
 <script src="{{ asset('AdminLTE/plugins/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('AdminLTE/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-<script>
-    $.widget.bridge('uibutton', $.ui.button)
-</script>
 <script src="{{ asset('AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <script src="{{ asset('AdminLTE/dist/js/adminlte.js') }}"></script>
 
 <script>
     $(document).ready(function() {
-        // Animación para las tarjetas al cargar la página
-        $('.feature-card').each(function(i) {
-            $(this).delay(200 * i).animate({
-                opacity: 1,
-                marginTop: 0
-            }, 400);
-        });
-        
-        // Mostrar SweetAlert de bienvenida
+        // Mostrar SweetAlert de bienvenida solo si es necesario
         @if(session('welcome'))
         Swal.fire({
-            title: '¡Bienvenido {{ Auth::user()->name ?? "Usuario" }}!',
-            text: 'Has ingresado al sistema de gestión de lombricultivo del SENA.',
+            title: 'Bienvenido {{ Auth::user()->name ?? "Usuario" }}',
+            text: 'Al sistema de gestión de lombricultivo del SENA',
             icon: 'success',
             confirmButtonColor: '#39B54A',
-            confirmButtonText: 'Comenzar',
-            timer: 5000,
-            timerProgressBar: true,
-            backdrop: `
-                rgba(57,181,74,0.4)
-                url("{{ asset('images/wavey-fingerprint.png') }}")
-                center top
-                no-repeat
-            `
+            confirmButtonText: 'Continuar',
+            timer: 3000,
+            timerProgressBar: true
         });
         @endif
     });

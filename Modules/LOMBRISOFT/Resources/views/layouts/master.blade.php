@@ -104,7 +104,7 @@
     <div class="wrapper">
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__wobble" src="{{ asset('images/images.png') }}" alt="AdminLTELogo" height="100" width="150">
+            <img class="animation__wobble" src="{{ asset('./adminLTE/dist/img/logoS.png') }}" alt="AdminLTELogo" height="100" width="150">
         </div>
 
         <nav class="main-header navbar navbar-expand navbar-dark">
@@ -116,36 +116,33 @@
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fas fa-sign-out-alt"></i> {{ __('Cerrar Sesión') }}
-                    </a>
-                    <form id="logout-form" action="#" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                </li>
-            </ul>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="fas fa-sign-out-alt"></i> {{ __('Cerrar Sesión') }}
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+        </form>
+    </li>
+</ul>
+
         </nav>
 
         <aside class="main-sidebar sidebar-light-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
-
+            <img class="" src="{{ asset('./adminLTE/dist/img/logoS.png') }}" alt="AdminLTELogo" height="35" width="55">
                 <span class="brand-text font-weight-light">Lombrisoft</span>
             </a>
 
             <div class="sidebar">
                 <!-- Sidebar user panel -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="info">
-                        <a href="#" class="d-block text-dark">Usuario SENA</a>
-                    </div>
-                </div>
+               
 
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{ route('lombrisoft.admin.welcome') }}"" class=" nav-link">
+                            <a href="{{ route('lombrisoft.admin.welcome') }}"class=" nav-link">
                                 <i class="nav-icon fas fa-home text-green"></i>
                                 <p>Inicio</p>
                             </a>
