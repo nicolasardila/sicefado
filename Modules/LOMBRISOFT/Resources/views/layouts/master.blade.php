@@ -181,18 +181,19 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-edit nav-icon text-green"></i>
-                                        <p>Ingreso</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-clipboard-list nav-icon text-green"></i>
-                                        <p>Listas</p>
-                                    </a>
-                                </li>
+                              <li class="nav-item">
+                                <a href="{{ route('lombrisoft.admin.materials.create') }}" class="nav-link">
+                                <i class="fas fa-edit nav-icon text-green"></i>
+                                   <p>Ingreso</p>
+                                  </a>
+                             </li>
+                            <li class="nav-item">
+                     <a href="{{ route('lombrisoft.admin.materials.index') }}" class="nav-link">
+                          <i class="fas fa-clipboard-list nav-icon text-green"></i>
+                         <p>Listas</p>
+                    </a>
+                    </li>
+
                             </ul>
                         </li>
 

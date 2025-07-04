@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWormsBedsTable extends Migration
+class CreateMaterialsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateWormsBedsTable extends Migration
      */
     public function up()
     {
-        Schema::create('wormsBeds', function (Blueprint $table) {
+        Schema::create('materials', function (Blueprint $table) {
             $table->id();
-            $table->integer('number');
-            $table->string('status');
-            $table->date('start_date');
+
             $table->timestamps();
         });
     }
@@ -25,10 +23,10 @@ class CreateWormsBedsTable extends Migration
     /**
      * Reverse the migrations.
      *
-     * @return voide
+     * @return void
      */
     public function down()
     {
-        Schema::dropIfExists('wormsBeds');
+        Schema::dropIfExists('materials');
     }
 }

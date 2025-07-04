@@ -35,16 +35,16 @@
         <div class="col-md-8">
             <div class="card shadow-lg rounded">
                 <div class="card-header bg-primary text-white text-center">
-                    <h4>Crear Nueva Cama</h4>
+                    <h4>Crear Nuevo Material</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('lombrisoft.admin.camas.store') }}" method="POST">
+                    <form action="{{ route('lombrisoft.admin.materials.store') }}" method="POST">
                         @csrf
 
                         <div class="mb-3">
-                            <label for="numero" class="form-label">Número de la Cama</label>
-                            <input type="number" class="form-control @error('numero') is-invalid @enderror" id="numero" name="numero" value="{{ old('numero') }}" required>
-                            @error('numero')
+                            <label for="nombre" class="form-label">Nombre del Material</label>
+                            <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" value="{{ old('nombre') }}" required>
+                            @error('nombre')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -53,9 +53,8 @@
                             <label for="estado" class="form-label">Estado</label>
                             <select class="form-select @error('estado') is-invalid @enderror" id="estado" name="estado" required>
                                 <option value="" disabled selected>Seleccione un estado</option>
-                                <option value="Disponible" {{ old('estado') == 'Disponible' ? 'selected' : '' }}>Disponible</option>
-                                <option value="Ocupada" {{ old('estado') == 'Ocupada' ? 'selected' : '' }}>Ocupada</option>
-                                <option value="Mantenimiento" {{ old('estado') == 'Mantenimiento' ? 'selected' : '' }}>Mantenimiento</option>
+                                <option value="1" {{ old('estado') == '1' ? 'selected' : '' }}>Disponible</option>
+                                <option value="0" {{ old('estado') == '0' ? 'selected' : '' }}>No Disponible</option>
                             </select>
                             @error('estado')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -63,16 +62,16 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="fecha_inicio" class="form-label">Fecha de Inicio</label>
-                            <input type="date" class="form-control @error('fecha_inicio') is-invalid @enderror" id="fecha_inicio" name="fecha_inicio" value="{{ old('fecha_inicio') }}" required>
-                            @error('fecha_inicio')
+                            <label for="cantidad" class="form-label">Cantidad</label>
+                            <input type="number" class="form-control @error('cantidad') is-invalid @enderror" id="cantidad" name="cantidad" value="{{ old('cantidad') }}" min="0" required>
+                            @error('cantidad')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="text-center">
                             <button type="submit" class="btn btn-success">Crear</button>
-                            <a href="{{ route('lombrisoft.admin.camas.index') }}" class="btn btn-secondary">Cancelar</a>
+                            <a href="{{ route('lombrisoft.admin.materials.index') }}" class="btn btn-secondary">Cancelar</a>
                         </div>
                     </form>
                 </div>
