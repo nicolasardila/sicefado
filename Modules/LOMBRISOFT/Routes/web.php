@@ -11,7 +11,7 @@ Route::middleware(['lang'])->prefix('lombrisoft')->group(function () {
     Route::get('/welcome', 'LOMBRISOFTController@welcome')->name('lombrisoft.welcome');
     Route::get('/intern/paneli', 'LOMBRISOFTController@intern')->name('lombrisoft.intern.paneli');
 
-    // Rutas para gestión de camas
+  // Rutas para gestión de camas
     Route::get('admin/camas', [WormBedController::class, 'index'])->name('lombrisoft.admin.camas.index');
     Route::get('admin/camas/crear', [WormBedController::class, 'create'])->name('lombrisoft.admin.camas.create');
     Route::post('admin/camas/store', [WormBedController::class, 'store'])->name('lombrisoft.admin.camas.store');
@@ -19,9 +19,8 @@ Route::middleware(['lang'])->prefix('lombrisoft')->group(function () {
     Route::get('admin/camas/{id}/editar', [WormBedController::class, 'edit'])->name('lombrisoft.admin.camas.edit');
     Route::put('admin/camas/{id}', [WormBedController::class, 'update'])->name('lombrisoft.admin.camas.update');
     Route::delete('admin/camas/{id}', [WormBedController::class, 'destroy'])->name('lombrisoft.admin.camas.destroy');
-
     // Rutas para gestión de materiales
-    Route::prefix('admin/materials')->group(function () {
+ Route::prefix('admin/materials')->group(function () {
         Route::get('/', [MaterialController::class, 'index'])->name('lombrisoft.admin.materials.index');
         Route::get('/crear', [MaterialController::class, 'create'])->name('lombrisoft.admin.materials.create');
         Route::post('/store', [MaterialController::class, 'store'])->name('lombrisoft.admin.materials.store');

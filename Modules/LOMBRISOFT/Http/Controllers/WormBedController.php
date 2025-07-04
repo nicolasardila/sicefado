@@ -22,10 +22,11 @@ class WormBedController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'numero' => 'required|integer',
+            'numero' => 'required|integer|unique:wormsbeds,number',
             'estado' => 'required|string',
             'fecha_inicio' => 'required|date',
         ]);
+
 
         WormBed::create([
             'number' => $request->input('numero'),
@@ -34,7 +35,7 @@ class WormBedController extends Controller
         ]);
 
         return redirect()->route('lombrisoft.admin.camas.index')
-               ->with('success', 'Cama creada correctamente.');
+            ->with('success', 'Cama creada correctamente.');
     }
 
     public function show($id)
@@ -48,25 +49,26 @@ class WormBedController extends Controller
         $cama = WormBed::findOrFail($id);
         return view('lombrisoft::admin.edit', compact('cama'));
     }
+public function update(Request $request, $id)
+{
+    $cama = WormBed::findOrFail($id);
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'numero' => 'required|integer',
-            'estado' => 'required|string',
-            'fecha_inicio' => 'required|date',
-        ]);
+    $request->validate([
+        'numero' => 'required|integer|unique:wormsbeds,number,' . $cama->id,
+        'estado' => 'required|string',
+        'fecha_inicio' => 'required|date',
+    ]);
 
-        $cama = WormBed::findOrFail($id);
-        $cama->update([
-            'number' => $request->input('numero'),
-            'status' => $request->input('estado'),
-            'start_date' => $request->input('fecha_inicio'),
-        ]);
+    $cama->update([
+        'number' => $request->input('numero'),
+        'status' => $request->input('estado'),
+        'start_date' => $request->input('fecha_inicio'),
+    ]);
 
-        return redirect()->route('lombrisoft.admin.camas.index')
-               ->with('success', 'Cama actualizada correctamente.');
-    }
+    return redirect()->route('lombrisoft.admin.camas.index')
+        ->with('success', 'Cama actualizada correctamente.');
+}
+
 
     public function destroy($id)
     {
@@ -74,6 +76,6 @@ class WormBedController extends Controller
         $cama->delete();
 
         return redirect()->route('lombrisoft.admin.camas.index')
-               ->with('success', 'Cama eliminada correctamente.');
+            ->with('success', 'Cama eliminada correctamente.');
     }
 }
