@@ -116,33 +116,33 @@
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-    <li class="nav-item">
-        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <i class="fas fa-sign-out-alt"></i> {{ __('Cerrar Sesión') }}
-        </a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-            @csrf
-        </form>
-    </li>
-</ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="fas fa-sign-out-alt"></i> {{ __('Cerrar Sesión') }}
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </li>
+            </ul>
 
         </nav>
 
         <aside class="main-sidebar sidebar-light-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
-            <img class="" src="{{ asset('./adminLTE/dist/img/logoS.png') }}" alt="AdminLTELogo" height="35" width="55">
+                <img class="" src="{{ asset('./adminLTE/dist/img/logoS.png') }}" alt="AdminLTELogo" height="35" width="55">
                 <span class="brand-text font-weight-light">Lombrisoft</span>
             </a>
 
             <div class="sidebar">
                 <!-- Sidebar user panel -->
-               
+
 
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{ route('lombrisoft.admin.welcome') }}"class=" nav-link">
+                            <a href="{{ route('lombrisoft.admin.welcome') }}" class=" nav-link">
                                 <i class="nav-icon fas fa-home text-green"></i>
                                 <p>Inicio</p>
                             </a>
@@ -181,18 +181,41 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                              <li class="nav-item">
-                                <a href="{{ route('lombrisoft.admin.materials.create') }}" class="nav-link">
-                                <i class="fas fa-edit nav-icon text-green"></i>
-                                   <p>Ingreso</p>
-                                  </a>
-                             </li>
-                            <li class="nav-item">
-                     <a href="{{ route('lombrisoft.admin.materials.index') }}" class="nav-link">
-                          <i class="fas fa-clipboard-list nav-icon text-green"></i>
-                         <p>Listas</p>
-                    </a>
-                    </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="fas fa-exchange-alt text-dark"></i>
+                                        <p>
+                                            Movimienos
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="{{ route('lombrisoft.admin.movements.create') }}" class="nav-link">
+                                                <i class="fas fa-edit nav-icon text-dark"></i>
+                                                <p>Registrar Movimientos</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('lombrisoft.admin.movements.index') }}" class="nav-link">
+                                                <i class="fas fa-clipboard-list nav-icon text-dark"></i>
+                                                <p>Historial Movimientos</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('lombrisoft.admin.materials.create') }}" class="nav-link">
+                                        <i class="fas fa-edit nav-icon text-green"></i>
+                                        <p>Ingreso</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('lombrisoft.admin.materials.index') }}" class="nav-link">
+                                        <i class="fas fa-clipboard-list nav-icon text-green"></i>
+                                        <p>Listas</p>
+                                    </a>
+                                </li>
 
                             </ul>
                         </li>
@@ -206,101 +229,17 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                <!-- Mantenimiento -->
-                                <li class="nav-item has-treeview">
+                                <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-wrench text-green"></i>
-                                        <p>
-                                            Mantenimiento
-                                            <i class="right fas fa-angle-left"></i>
-                                        </p>
+                                        <i class="fas fa-edit nav-icon text-green"></i>
+                                        <p>Ingreso</p>
                                     </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="fas fa-edit nav-icon text-green"></i>
-                                                <p>Ingreso</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="fas fa-clipboard-list nav-icon text-green"></i>
-                                                <p>Listas</p>
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </li>
-                                <!-- Alimentación -->
-                                <li class="nav-item has-treeview">
+                                <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-utensils text-green"></i>
-                                        <p>
-                                            Alimentación
-                                            <i class="right fas fa-angle-left"></i>
-                                        </p>
+                                        <i class="fas fa-clipboard-list nav-icon text-green"></i>
+                                        <p>Listas</p>
                                     </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="fas fa-edit nav-icon text-green"></i>
-                                                <p>Ingreso</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="fas fa-clipboard-list nav-icon text-green"></i>
-                                                <p>Listas</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <!-- Humedad -->
-                                <li class="nav-item has-treeview">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-tint text-green"></i>
-                                        <p>
-                                            Humedad
-                                            <i class="right fas fa-angle-left"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="fas fa-edit nav-icon text-green"></i>
-                                                <p>Ingreso</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="fas fa-clipboard-list nav-icon text-green"></i>
-                                                <p>Listas</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item has-treeview">
-                                    <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-box-open text-green"></i>
-                                        <p>
-                                            Recolección
-                                            <i class="right fas fa-angle-left"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="fas fa-edit nav-icon text-green"></i>
-                                                <p>Ingreso</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="fas fa-clipboard-list nav-icon text-green"></i>
-                                                <p>Listas</p>
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </li>
                             </ul>
                         </li>

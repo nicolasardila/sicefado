@@ -2,6 +2,7 @@
 
 use Modules\LOMBRISOFT\Http\Controllers\WormBedController;
 use Modules\LOMBRISOFT\Http\Controllers\MaterialController;
+use Modules\LOMBRISOFT\Http\Controllers\MaterialMovementController;
 
 Route::middleware(['lang'])->prefix('lombrisoft')->group(function () {
 
@@ -29,5 +30,11 @@ Route::middleware(['lang'])->prefix('lombrisoft')->group(function () {
         Route::put('/{id}', [MaterialController::class, 'update'])->name('lombrisoft.admin.materials.update');
         Route::delete('/{id}', [MaterialController::class, 'destroy'])->name('lombrisoft.admin.materials.destroy');
     });
-
+    Route::prefix('admin/movements')->group(function () {
+    Route::get('/', [MaterialMovementController::class, 'index'])->name('lombrisoft.admin.movements.index');
+    Route::get('/crear', [MaterialMovementController::class, 'create'])->name('lombrisoft.admin.movements.create');
+    Route::post('/store', [MaterialMovementController::class, 'store'])->name('lombrisoft.admin.movements.store');
+    Route::get('/{id}', [MaterialMovementController::class, 'show'])->name('lombrisoft.admin.movements.show');
+    Route::delete('/{id}', [MaterialMovementController::class, 'destroy'])->name('lombrisoft.admin.movements.destroy');
+});
 });
