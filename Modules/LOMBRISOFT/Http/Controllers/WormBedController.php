@@ -8,10 +8,18 @@ use Modules\LOMBRISOFT\Entities\WormBed;
 
 class WormBedController extends Controller
 {
+    public function admin()
+    {
+        // 👉 Cargamos las camas para que welcome.blade.php no explote
+        $camas = WormBed::all();
+        return view('lombrisoft::welcome', compact('camas'));
+    }
     public function index()
     {
         $camas = WormBed::all();
+        $activities = []; // Placeholder vacío hasta que tengas el modelo Activity
         return view('lombrisoft::admin.listacamas', compact('camas'));
+
     }
 
     public function create()
@@ -26,7 +34,6 @@ class WormBedController extends Controller
             'estado' => 'required|string',
             'fecha_inicio' => 'required|date',
         ]);
-
 
         WormBed::create([
             'number' => $request->input('numero'),
@@ -49,26 +56,26 @@ class WormBedController extends Controller
         $cama = WormBed::findOrFail($id);
         return view('lombrisoft::admin.edit', compact('cama'));
     }
-public function update(Request $request, $id)
-{
-    $cama = WormBed::findOrFail($id);
 
-    $request->validate([
-        'numero' => 'required|integer|unique:wormsbeds,number,' . $cama->id,
-        'estado' => 'required|string',
-        'fecha_inicio' => 'required|date',
-    ]);
+    public function update(Request $request, $id)
+    {
+        $cama = WormBed::findOrFail($id);
 
-    $cama->update([
-        'number' => $request->input('numero'),
-        'status' => $request->input('estado'),
-        'start_date' => $request->input('fecha_inicio'),
-    ]);
+        $request->validate([
+            'numero' => 'required|integer|unique:wormsbeds,number,' . $cama->id,
+            'estado' => 'required|string',
+            'fecha_inicio' => 'required|date',
+        ]);
 
-    return redirect()->route('lombrisoft.admin.camas.index')
-        ->with('success', 'Cama actualizada correctamente.');
-}
+        $cama->update([
+            'number' => $request->input('numero'),
+            'status' => $request->input('estado'),
+            'start_date' => $request->input('fecha_inicio'),
+        ]);
 
+        return redirect()->route('lombrisoft.admin.camas.index')
+            ->with('success', 'Cama actualizada correctamente.');
+    }
 
     public function destroy($id)
     {

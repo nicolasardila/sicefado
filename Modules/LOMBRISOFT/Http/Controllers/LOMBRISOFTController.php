@@ -5,6 +5,7 @@ namespace Modules\LOMBRISOFT\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\LOMBRISOFT\Entities\WormBed;
 
 class LOMBRISOFTController extends Controller
 {
@@ -21,9 +22,10 @@ class LOMBRISOFTController extends Controller
         return view('lombrisoft::welcome');
     }
     public function admin()
-    {
-        return view('lombrisoft::welcome');
-    }
+{
+    $camas = WormBed::all(); // ✅ Cargar camas desde la base de datos
+    return view('lombrisoft::welcome', compact('camas')); // ✅ Pasarlas a la vista
+}
     public function intern()
     {
         return view('lombrisoft::paneli');
