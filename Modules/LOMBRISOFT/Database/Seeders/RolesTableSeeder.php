@@ -23,6 +23,9 @@ class RolesTableSeeder extends Seeder
         $useradministrador = User::where('nickname', 'Nardila')->firstOrFail();
         $useradministrador ->roles()->syncWithoutDetaching([$roleadmin->id]);
 
+        $useradministrador = User::where('nickname', 'eduarp')->firstOrFail();
+        $useradministrador ->roles()->syncWithoutDetaching([$roleadmin->id]);
+
         $roleintern = Role::updateOrCreate(['slug' => 'lombrisoft.intern'], [
             'name' => 'pasante',
             'description' => 'Pasante del sistema de Lombricultivo',

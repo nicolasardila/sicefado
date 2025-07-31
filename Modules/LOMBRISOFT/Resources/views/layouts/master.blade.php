@@ -174,54 +174,6 @@
 
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-tools text-green"></i>
-                                <p>
-                                    Herramientas
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-exchange-alt text-dark"></i>
-                                        <p>
-                                            Movimienos
-                                            <i class="right fas fa-angle-left"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a href="{{ route('lombrisoft.admin.movements.create') }}" class="nav-link">
-                                                <i class="fas fa-edit nav-icon text-dark"></i>
-                                                <p>Registrar Movimientos</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ route('lombrisoft.admin.movements.index') }}" class="nav-link">
-                                                <i class="fas fa-clipboard-list nav-icon text-dark"></i>
-                                                <p>Historial Movimientos</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('lombrisoft.admin.materials.create') }}" class="nav-link">
-                                        <i class="fas fa-edit nav-icon text-green"></i>
-                                        <p>Ingreso</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('lombrisoft.admin.materials.index') }}" class="nav-link">
-                                        <i class="fas fa-clipboard-list nav-icon text-green"></i>
-                                        <p>Listas</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
-
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-tasks text-green"></i>
                                 <p>
                                     Actividades
@@ -230,13 +182,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('lombrisoft.admin.bed_activities.create') }}" class="nav-link">
                                         <i class="fas fa-edit nav-icon text-green"></i>
                                         <p>Ingreso</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('lombrisoft.admin.bed_activities.index') }}" class="nav-link">
                                         <i class="fas fa-clipboard-list nav-icon text-green"></i>
                                         <p>Listas</p>
                                     </a>

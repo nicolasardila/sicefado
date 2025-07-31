@@ -60,5 +60,18 @@ class PeopleTableSeeder extends Seeder
 
             ]
         );
+        Person::firstOrCreate(
+            ['document_number' => '7719513'],
+            [
+                'document_type' => 'Cedula Ciudadania',
+                'first_name' => 'EDUARDO',
+                'first_last_name' => 'PASTRANA',
+                'second_last_name' => 'GRANADOS',
+                'eps_id' => $eps->id,
+                'population_group_id' => $population_group->id,
+                'pension_entity_id' => $pension_entity->id
+
+            ]
+        );
     }
 }

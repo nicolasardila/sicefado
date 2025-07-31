@@ -228,6 +228,69 @@ class PermissionsTableSeeder extends Seeder
                 'app_id' => $app->id,
             ]
         )->id;
+        /** ============================================
+         *  PERMISOS PARA ACTIVIDADES EN CAMAS (ADMINISTRADOR)
+         *  ============================================ */
+        $permissions_admin[] = Permission::updateOrCreate(
+            ['slug' => 'lombrisoft.admin.bed_activities.index'],
+            [
+                'name' => 'Acceso a la lista de actividades',
+                'description' => 'Permite acceder a la lista de actividades de camas',
+                'description_english' => 'Allows access to worm bed activities list',
+                'app_id' => $app->id,
+            ]
+        )->id;
+
+        $permissions_admin[] = Permission::updateOrCreate(
+            ['slug' => 'lombrisoft.admin.bed_activities.create'],
+            [
+                'name' => 'Crear actividades',
+                'description' => 'Permite crear nuevas actividades en camas',
+                'description_english' => 'Allows creating new bed activities',
+                'app_id' => $app->id,
+            ]
+        )->id;
+
+        $permissions_admin[] = Permission::updateOrCreate(
+            ['slug' => 'lombrisoft.admin.bed_activities.store'],
+            [
+                'name' => 'Guardar actividades',
+                'description' => 'Permite guardar nuevas actividades en camas',
+                'description_english' => 'Allows storing new bed activities',
+                'app_id' => $app->id,
+            ]
+        )->id;
+
+        $permissions_admin[] = Permission::updateOrCreate(
+            ['slug' => 'lombrisoft.admin.bed_activities.edit'],
+            [
+                'name' => 'Editar actividades',
+                'description' => 'Permite editar actividades en camas',
+                'description_english' => 'Allows editing bed activities',
+                'app_id' => $app->id,
+            ]
+        )->id;
+
+        $permissions_admin[] = Permission::updateOrCreate(
+            ['slug' => 'lombrisoft.admin.bed_activities.update'],
+            [
+                'name' => 'Actualizar actividades',
+                'description' => 'Permite actualizar actividades en camas',
+                'description_english' => 'Allows updating bed activities',
+                'app_id' => $app->id,
+            ]
+        )->id;
+
+        $permissions_admin[] = Permission::updateOrCreate(
+            ['slug' => 'lombrisoft.admin.bed_activities.destroy'],
+            [
+                'name' => 'Eliminar actividades',
+                'description' => 'Permite eliminar actividades en camas',
+                'description_english' => 'Allows deleting bed activities',
+                'app_id' => $app->id,
+            ]
+        )->id;
+
 
 
         // Asignar permisos al rol administrador

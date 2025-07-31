@@ -15,6 +15,10 @@ protected $table = 'wormsBeds';
         'status',
         'start_date'
     ];
+public function activities()
+    {
+        return $this->hasMany(Activity::class, 'worm_bed_id');
+    }
 
     protected static function newFactory()
     {

@@ -3,6 +3,8 @@
 use Modules\LOMBRISOFT\Http\Controllers\WormBedController;
 use Modules\LOMBRISOFT\Http\Controllers\MaterialController;
 use Modules\LOMBRISOFT\Http\Controllers\MaterialMovementController;
+use Modules\LOMBRISOFT\Http\Controllers\BedActivityController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['lang'])->prefix('lombrisoft')->group(function () {
 
@@ -20,21 +22,13 @@ Route::middleware(['lang'])->prefix('lombrisoft')->group(function () {
     Route::get('admin/camas/{id}/editar', [WormBedController::class, 'edit'])->name('lombrisoft.admin.camas.edit');
     Route::put('admin/camas/{id}', [WormBedController::class, 'update'])->name('lombrisoft.admin.camas.update');
     Route::delete('admin/camas/{id}', [WormBedController::class, 'destroy'])->name('lombrisoft.admin.camas.destroy');
-    // Rutas para gestión de materiales
- Route::prefix('admin/materials')->group(function () {
-        Route::get('/', [MaterialController::class, 'index'])->name('lombrisoft.admin.materials.index');
-        Route::get('/crear', [MaterialController::class, 'create'])->name('lombrisoft.admin.materials.create');
-        Route::post('/store', [MaterialController::class, 'store'])->name('lombrisoft.admin.materials.store');
-        Route::get('/{id}', [MaterialController::class, 'show'])->name('lombrisoft.admin.materials.show');
-        Route::get('/{id}/editar', [MaterialController::class, 'edit'])->name('lombrisoft.admin.materials.edit');
-        Route::put('/{id}', [MaterialController::class, 'update'])->name('lombrisoft.admin.materials.update');
-        Route::delete('/{id}', [MaterialController::class, 'destroy'])->name('lombrisoft.admin.materials.destroy');
-    });
-    Route::prefix('admin/movements')->group(function () {
-    Route::get('/', [MaterialMovementController::class, 'index'])->name('lombrisoft.admin.movements.index');
-    Route::get('/crear', [MaterialMovementController::class, 'create'])->name('lombrisoft.admin.movements.create');
-    Route::post('/store', [MaterialMovementController::class, 'store'])->name('lombrisoft.admin.movements.store');
-    Route::get('/{id}', [MaterialMovementController::class, 'show'])->name('lombrisoft.admin.movements.show');
-    Route::delete('/{id}', [MaterialMovementController::class, 'destroy'])->name('lombrisoft.admin.movements.destroy');
+    
 });
+Route::prefix('admin/bed_activities')->group(function () {
+    Route::get('/', [BedActivityController::class, 'index'])->name('lombrisoft.admin.bed_activities.index');
+    Route::get('/create', [BedActivityController::class, 'create'])->name('lombrisoft.admin.bed_activities.create');
+    Route::post('/store', [BedActivityController::class, 'store'])->name('lombrisoft.admin.bed_activities.store');
+    Route::put('/{id}', [BedActivityController::class, 'update'])->name('lombrisoft.admin.bed_activities.update');
+    Route::delete('/{id}', [BedActivityController::class, 'destroy'])->name('lombrisoft.admin.bed_activities.destroy');
 });
+

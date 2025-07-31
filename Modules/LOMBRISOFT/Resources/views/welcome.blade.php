@@ -42,7 +42,7 @@
 
         <!-- Botón para crear una nueva cama -->
         <div class="mt-10 text-center">
-            <a href="{{ route('lombrisoft.admin.camas.create') }}" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors duration-300 animate-pulse">Agregar Nueva Cama</a>
+            <a href="{{ route('lombrisoft.admin.camas.create') }}" class="inline-block bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition-colors duration-300 animate-pulse">Agregar Nueva Cama</a>
         </div>
 
         <!-- Modal para seleccionar tipo de actividad -->

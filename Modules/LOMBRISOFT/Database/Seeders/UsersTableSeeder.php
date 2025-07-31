@@ -27,5 +27,10 @@ class UsersTableSeeder extends Seeder
             'person_id' => $person->id,
             'email' => 'paceburo21@gmail.com'            //Password: Pabu3032
         ]);
+        $person = Person::where('document_number', 7719513)->first();
+        User::updateOrCreate(['nickname' => 'eduarp'], [
+            'person_id' => $person->id,
+            'email' => 'epastranag@sena.edu.co'            //Password: Edpa9513
+        ]);
     }
 }
