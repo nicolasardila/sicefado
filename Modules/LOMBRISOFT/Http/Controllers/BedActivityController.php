@@ -13,14 +13,34 @@ use Illuminate\Support\Facades\Validator;
 class BedActivityController extends Controller
 {
     // Mostrar lista de actividades
-    public function index()
-    {
-        $activities = BedActivity::with(['wormBed'])->get();
-        $camas = WormBed::all();;
-
-        return view('lombrisoft::bed_activities.index', compact('activities', 'camas'));
+   public function index(Request $request)
+{
+    // Iniciar la consulta con eager loading
+    $query = BedActivity::with(['wormBed']);
+    
+    // Aplicar filtros si existen en la solicitud
+    if ($request->has('tipo') && $request->tipo != '') {
+        $query->where('tipo', $request->tipo);
     }
-
+    
+    if ($request->has('fecha_inicio') && $request->fecha_inicio != '') {
+        $query->whereDate('fecha_actividad', '>=', $request->fecha_inicio);
+    }
+    
+    if ($request->has('fecha_fin') && $request->fecha_fin != '') {
+        $query->whereDate('fecha_actividad', '<=', $request->fecha_fin);
+    }
+    
+    if ($request->has('cama_id') && $request->cama_id != '') {
+        $query->where('worm_bed_id', $request->cama_id);
+    }
+    
+    // Ordenar por fecha más reciente primero y obtener resultados
+    $activities = $query->orderBy('fecha_actividad', 'desc')->get();
+    $camas = WormBed::all();
+    
+    return view('lombrisoft::bed_activities.index', compact('activities', 'camas'));
+}
     // Formulario de creación
     public function create()
     {
@@ -86,19 +106,14 @@ class BedActivityController extends Controller
 
     // Actualizar actividad (opcional: agregar lógica para update de herramientas si quieres)
     public function update(Request $request, $id)
-    {
-        $actividad = BedActivity::findOrFail($id);
+{
+    $actividad = BedActivity::findOrFail($id);
+    $actividad->fill($request->all());
+    $actividad->save();
 
-        $request->validate([
-            'worm_bed_id' => 'required|exists:wormsBeds,id',
-            'tipo' => 'required|in:mantenimiento,alimentacion,humedad,recoleccion',
-            'fecha_actividad' => 'required|date',
-        ]);
-
-        $actividad->update($request->all());
-
-        return redirect()->route('lombrisoft.admin.bed_activities.index')->with('success', 'Actividad actualizada correctamente.');
-    }
+    return redirect()->route('lombrisoft.admin.bed_activities.index')
+                     ->with('success', 'Actividad actualizada correctamente');
+}
 
     // Eliminar actividad
     public function destroy($id)
