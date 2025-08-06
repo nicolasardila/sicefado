@@ -206,17 +206,12 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                   <a class="nav-link" href="{{ route('reports.index') }}">
                                         <i class="fas fa-tasks nav-icon text-green"></i>
-                                        <p>Actividades</p>
+                                        <p>Historial</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fas fa-file-invoice-dollar nav-icon text-green"></i>
-                                        <p>Contable</p>
-                                    </a>
-                                </li>
+                            
                             </ul>
                         </li>
                     </ul>

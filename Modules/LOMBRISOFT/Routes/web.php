@@ -4,6 +4,7 @@ use Modules\LOMBRISOFT\Http\Controllers\WormBedController;
 use Modules\LOMBRISOFT\Http\Controllers\MaterialController;
 use Modules\LOMBRISOFT\Http\Controllers\MaterialMovementController;
 use Modules\LOMBRISOFT\Http\Controllers\BedActivityController;
+use Modules\LOMBRISOFT\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['lang'])->prefix('lombrisoft')->group(function () {
@@ -30,5 +31,12 @@ Route::prefix('admin/bed_activities')->group(function () {
     Route::post('/store', [BedActivityController::class, 'store'])->name('lombrisoft.admin.bed_activities.store');
     Route::put('/{id}', [BedActivityController::class, 'update'])->name('lombrisoft.admin.bed_activities.update');
     Route::delete('/{id}', [BedActivityController::class, 'destroy'])->name('lombrisoft.admin.bed_activities.destroy');
+});
+
+Route::middleware(['web'])->group(function () {
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('reports/pdf', [ReportController::class, 'exportPdf'])->name('reports.pdf');
+    Route::get('reports/word', [ReportController::class, 'exportWord'])->name('reports.word');
+    Route::post('reports', [ReportController::class, 'store'])->name('reports.store');
 });
 
