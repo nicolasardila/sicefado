@@ -18,19 +18,37 @@ class BedActivity extends Model
         'descripcion',
         'fecha_actividad',
         'hora_actividad',
-        'cantidad_alimento',
-        'tipo_alimento',
-        'nivel_humedad',
-        'tipo_recoleccion',
-        'cantidad_recolectada',
-        'ph',
-        'temperatura',
-
     ];
 
     // Relación con cama
     public function wormBed()
     {
         return $this->belongsTo(WormBed::class, 'worm_bed_id');
+    }
+
+    // Relaciones polimorfas o directas a cada tipo de actividad
+    public function feeding()
+    {
+        return $this->hasOne(FeedingActivity::class, 'bed_activity_id');
+    }
+
+    public function moisture()
+    {
+        return $this->hasOne(MoistureActivity::class, 'bed_activity_id');
+    }
+
+    public function harvest()
+    {
+        return $this->hasOne(HarvestActivity::class, 'bed_activity_id');
+    }
+
+    public function ph()
+    {
+        return $this->hasOne(PhActivity::class, 'bed_activity_id');
+    }
+
+    public function temperature()
+    {
+        return $this->hasOne(TemperatureActivity::class, 'bed_activity_id');
     }
 }

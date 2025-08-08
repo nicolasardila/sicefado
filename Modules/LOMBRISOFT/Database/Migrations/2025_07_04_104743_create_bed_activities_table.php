@@ -24,21 +24,6 @@ class CreateBedActivitiesTable extends Migration
             $table->date('fecha_actividad');
             $table->time('hora_actividad')->nullable();
 
-            // Alimentación
-            $table->integer('cantidad_alimento')->nullable();
-            $table->string('tipo_alimento')->nullable();
-
-            // Humedad
-            $table->float('nivel_humedad')->nullable();
-
-            // Recolección
-            $table->string('tipo_recoleccion')->nullable();
-            $table->integer('cantidad_recolectada')->nullable();
-
-            // PH y temperatura
-            $table->float('ph')->nullable();
-            $table->float('temperatura')->nullable();
-
             $table->timestamps();
         });
     }

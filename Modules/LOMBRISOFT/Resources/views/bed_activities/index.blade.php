@@ -85,41 +85,43 @@
                             <td>{{ $activity->hora_actividad ?? '-' }}</td>
                             <td class="text-center">
                                 <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#editModal"
-    data-id="{{ $activity->id }}"
-    data-tipo="{{ $activity->tipo }}"
-    data-cama="{{ $activity->worm_bed_id }}"
-    data-fecha="{{ $activity->fecha_actividad }}"
-    data-hora="{{ $activity->hora_actividad }}"
-    data-descripcion="{{ $activity->descripcion ?? '' }}"
-    data-cantidad-alimento="{{ $activity->cantidad_alimento ?? '' }}"
-    data-tipo-alimento="{{ $activity->tipo_alimento ?? '' }}"
-    data-nivel-humedad="{{ $activity->nivel_humedad ?? '' }}"
-    data-tipo-recoleccion="{{ $activity->tipo_recoleccion ?? '' }}"
-    data-cantidad-recolectada="{{ $activity->cantidad_recolectada ?? '' }}"
-    data-ph="{{ $activity->ph ?? '' }}"
-    data-temperatura="{{ $activity->temperatura ?? '' }}">
-    Editar
-</button>
+                                data-id="{{ $activity->id }}"
+                                data-tipo="{{ $activity->tipo }}"
+                                data-cama="{{ $activity->worm_bed_id }}"
+                                data-fecha="{{ $activity->fecha_actividad }}"
+                                data-hora="{{ $activity->hora_actividad }}"
+                                data-descripcion="{{ $activity->descripcion ?? '' }}"
+                                data-cantidad-alimento="{{ $activity->feeding->cantidad_alimento ?? '' }}"
+                                data-tipo-alimento="{{ $activity->feeding->tipo_alimento ?? '' }}"
+                                data-nivel-humedad="{{ $activity->moisture->nivel_humedad ?? '' }}"
+                                data-tipo-recoleccion="{{ $activity->harvest->tipo_recoleccion ?? '' }}"
+                                data-cantidad-recolectada="{{ $activity->harvest->cantidad_recolectada ?? '' }}"
+                                data-ph="{{ $activity->ph->ph ?? '' }}"
+                                data-temperatura="{{ $activity->temperature->temperatura ?? '' }}">
+                                Editar
+                            </button>
                                 <form action="{{ route('lombrisoft.admin.bed_activities.destroy', $activity->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" class="btn btn-sm btn-danger" onclick="confirmarEliminacion(this)">Eliminar</button>
                                 </form>
                                 <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#viewModal"
-        data-id="{{ $activity->id }}"
-        data-tipo="{{ $activity->tipo }}"
-        data-cama="Cama N° {{ $activity->wormBed->number }}"
-        data-fecha="{{ $activity->fecha_actividad }}"
-        data-hora="{{ $activity->hora_actividad }}"
-        data-descripcion="{{ $activity->descripcion ?? 'Sin descripción' }}"
-        data-cantidad-alimento="{{ $activity->cantidad_alimento ?? 'N/A' }}"
-        data-tipo-alimento="{{ $activity->tipo_alimento ?? 'N/A' }}"
-        data-nivel-humedad="{{ $activity->nivel_humedad ?? 'N/A' }}"
-        data-tipo-recoleccion="{{ $activity->tipo_recoleccion ?? 'N/A' }}"
-        data-cantidad-recolectada="{{ $activity->cantidad_recolectada ?? 'N/A' }}"
-        data-ph="{{ $activity->ph ?? 'N/A' }}"
-        data-temperatura="{{ $activity->temperatura ?? 'N/A' }}">
-        <i class="fas fa-eye"></i> Ver
+    data-id="{{ $activity->id }}"
+    data-tipo="{{ $activity->tipo }}"
+    data-cama="Cama N° {{ $activity->wormBed->number }}"
+    data-fecha="{{ $activity->fecha_actividad }}"
+    data-hora="{{ $activity->hora_actividad }}"
+    data-descripcion="{{ $activity->descripcion ?? 'Sin descripción' }}"
+    data-cantidad-alimento="{{ $activity->cantidad_alimento ?? 'N/A' }}"
+    data-tipo-alimento="{{ $activity->tipo_alimento ?? 'N/A' }}"
+    data-nivel-humedad="{{ $activity->nivel_humedad ?? 'N/A' }}"
+    data-tipo-recoleccion="{{ $activity->tipo_recoleccion ?? 'N/A' }}"
+    data-cantidad-recolectada="{{ $activity->cantidad_recolectada ?? 'N/A' }}"
+    data-ph="{{ $activity->ph ?? 'N/A' }}"
+    data-temperatura="{{ $activity->temperatura ?? 'N/A' }}">
+    <i class="fas fa-eye"></i> Ver
+</button>
+
                             </td>
                         </tr>
                         @endforeach
@@ -148,13 +150,14 @@
                             <li class="list-group-item"><strong>Fecha:</strong> <span id="viewFecha"></span></li>
                             <li class="list-group-item"><strong>Hora:</strong> <span id="viewHora"></span></li>
                         </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <h5 class="mb-3">Detalles Específicos</h5>
-                        <ul class="list-group list-group-flush" id="specificDetails">
-                            <!-- Los detalles dinámicos se insertarán aquí -->
-                        </ul>
-                    </div>
+                    </div><div class="col-md-6">
+    <h5 class="mb-3">Detalles Específicos</h5>
+                <ul class="list-group list-group-flush" id="specificDetails">
+                    <!-- Aquí se insertan los detalles dinámicamente -->
+                </ul>
+</div>
+
+
                 </div>
                 <div class="mt-4">
                     <h5>Descripción</h5>
@@ -364,14 +367,14 @@ document.getElementById('viewModal').addEventListener('show.bs.modal', function(
     
     // Establecer valores básicos
     document.getElementById('viewCama').textContent = button.getAttribute('data-cama');
-    document.getElementById('viewTipo').textContent = button.getAttribute('data-tipo');
+    document.getElementById('viewTipo').textContent = tipo;
     document.getElementById('viewFecha').textContent = button.getAttribute('data-fecha');
     document.getElementById('viewHora').textContent = button.getAttribute('data-hora') || 'No registrada';
-    document.getElementById('viewDescripcion').textContent = button.getAttribute('data-descripcion');
+    document.getElementById('viewDescripcion').textContent = button.getAttribute('data-descripcion') || 'Sin descripción';
 
-    // Generar detalles específicos según el tipo
+    // Contenedor de detalles específicos
     const detailsContainer = document.getElementById('specificDetails');
-    detailsContainer.innerHTML = ''; // Limpiar contenido anterior
+    detailsContainer.innerHTML = '';
 
     const tipoMap = {
         'alimentacion': [
@@ -397,22 +400,21 @@ document.getElementById('viewModal').addEventListener('show.bs.modal', function(
     };
 
     const detalles = tipoMap[tipo] || [];
-    
+
     detalles.forEach(detalle => {
         if (detalle.value && detalle.value !== 'N/A') {
-            const listItem = document.createElement('li');
-            listItem.className = 'list-group-item';
-            listItem.innerHTML = `<strong>${detalle.label}:</strong> ${detalle.value} ${detalle.unit || ''}`;
-            detailsContainer.appendChild(listItem);
+            const item = document.createElement('li');
+            item.className = 'list-group-item';
+            item.innerHTML = `<strong>${detalle.label}:</strong> ${detalle.value} ${detalle.unit || ''}`;
+            detailsContainer.appendChild(item);
         }
     });
 
-    // Si no hay detalles específicos
     if (detailsContainer.children.length === 0) {
-        const listItem = document.createElement('li');
-        listItem.className = 'list-group-item text-muted';
-        listItem.textContent = 'No hay detalles específicos registrados';
-        detailsContainer.appendChild(listItem);
+        const emptyItem = document.createElement('li');
+        emptyItem.className = 'list-group-item text-muted';
+        emptyItem.textContent = 'No hay detalles específicos registrados';
+        detailsContainer.appendChild(emptyItem);
     }
 });
 </script>

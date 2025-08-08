@@ -29,6 +29,7 @@ Route::prefix('admin/bed_activities')->group(function () {
     Route::get('/', [BedActivityController::class, 'index'])->name('lombrisoft.admin.bed_activities.index');
     Route::get('/create', [BedActivityController::class, 'create'])->name('lombrisoft.admin.bed_activities.create');
     Route::post('/store', [BedActivityController::class, 'store'])->name('lombrisoft.admin.bed_activities.store');
+    Route::get('bed-activities/{id}', [BedActivityController::class, 'show'])->name('lombrisoft.admin.bed_activities.show');
     Route::put('/{id}', [BedActivityController::class, 'update'])->name('lombrisoft.admin.bed_activities.update');
     Route::delete('/{id}', [BedActivityController::class, 'destroy'])->name('lombrisoft.admin.bed_activities.destroy');
 });

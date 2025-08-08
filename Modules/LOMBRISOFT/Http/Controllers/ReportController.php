@@ -123,7 +123,14 @@ public function index(Request $request)
 
    public function exportPdf(Request $request)
 {
-    $query = BedActivity::with('wormBed');
+    $query = BedActivity::with([
+        'wormBed',
+        'feeding',
+        'moisture',
+        'harvest',
+        'ph',
+        'temperature'
+    ]);
 
     if ($request->filled('tipo')) {
         $tipos = $request->input('tipo');
@@ -133,12 +140,15 @@ public function index(Request $request)
             $query->where('tipo', $tipos);
         }
     }
+
     if ($request->filled('worm_bed_id')) {
         $query->where('worm_bed_id', $request->worm_bed_id);
     }
+
     if ($request->filled('fecha_inicio')) {
         $query->whereDate('fecha_actividad', '>=', $request->fecha_inicio);
     }
+
     if ($request->filled('fecha_fin')) {
         $query->whereDate('fecha_actividad', '<=', $request->fecha_fin);
     }
@@ -147,26 +157,25 @@ public function index(Request $request)
 
     // Detectar columnas con datos
     $columnas = [
-        'cantidad_alimento' => false,
-        'tipo_alimento' => false,
-        'nivel_humedad' => false,
-        'tipo_recoleccion' => false,
-        'cantidad_recolectada' => false,
+        'feeding' => false,
+        'moisture' => false,
+        'harvest' => false,
         'ph' => false,
-        'temperatura' => false,
+        'temperature' => false,
     ];
 
     foreach ($actividades as $actividad) {
-        foreach ($columnas as $campo => $valor) {
-            if (!empty($actividad->$campo)) {
-                $columnas[$campo] = true;
-            }
-        }
+        if ($actividad->feeding) $columnas['feeding'] = true;
+        if ($actividad->moisture) $columnas['moisture'] = true;
+        if ($actividad->harvest) $columnas['harvest'] = true;
+        if ($actividad->ph) $columnas['ph'] = true;
+        if ($actividad->temperature) $columnas['temperature'] = true;
     }
 
     $pdf = Pdf::loadView('lombrisoft::Reports.pdf', compact('actividades', 'columnas'));
     return $pdf->download('actividades.pdf');
 }
+
 
   
 }

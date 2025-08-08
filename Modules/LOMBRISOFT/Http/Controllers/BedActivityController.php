@@ -1,54 +1,59 @@
-<?php
-
+<?php 
 namespace Modules\LOMBRISOFT\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\LOMBRISOFT\Entities\BedActivity;
 use Modules\LOMBRISOFT\Entities\WormBed;
+use Modules\LOMBRISOFT\Entities\FeedingActivity;
+use Modules\LOMBRISOFT\Entities\MoistureActivity;
+use Modules\LOMBRISOFT\Entities\HarvestActivity;
+use Modules\LOMBRISOFT\Entities\PhActivity;
+use Modules\LOMBRISOFT\Entities\TemperatureActivity;
 use DB;
-use Illuminate\Support\Facades\Validator;
-
 
 class BedActivityController extends Controller
 {
-    // Mostrar lista de actividades
-   public function index(Request $request)
-{
-    // Iniciar la consulta con eager loading
-    $query = BedActivity::with(['wormBed']);
-    
-    // Aplicar filtros si existen en la solicitud
-    if ($request->has('tipo') && $request->tipo != '') {
-        $query->where('tipo', $request->tipo);
+    public function index(Request $request)
+    {
+        $query = BedActivity::with([
+    'wormBed',
+    'feeding',
+    'moisture',
+    'harvest',
+    'ph',
+    'temperature'
+]);
+
+
+        if ($request->filled('tipo')) {
+            $query->where('tipo', $request->tipo);
+        }
+
+        if ($request->filled('fecha_inicio')) {
+            $query->whereDate('fecha_actividad', '>=', $request->fecha_inicio);
+        }
+
+        if ($request->filled('fecha_fin')) {
+            $query->whereDate('fecha_actividad', '<=', $request->fecha_fin);
+        }
+
+        if ($request->filled('cama_id')) {
+            $query->where('worm_bed_id', $request->cama_id);
+        }
+
+        $activities = $query->orderBy('fecha_actividad', 'desc')->get();
+        $camas = WormBed::all();
+
+        return view('lombrisoft::bed_activities.index', compact('activities', 'camas'));
     }
-    
-    if ($request->has('fecha_inicio') && $request->fecha_inicio != '') {
-        $query->whereDate('fecha_actividad', '>=', $request->fecha_inicio);
-    }
-    
-    if ($request->has('fecha_fin') && $request->fecha_fin != '') {
-        $query->whereDate('fecha_actividad', '<=', $request->fecha_fin);
-    }
-    
-    if ($request->has('cama_id') && $request->cama_id != '') {
-        $query->where('worm_bed_id', $request->cama_id);
-    }
-    
-    // Ordenar por fecha más reciente primero y obtener resultados
-    $activities = $query->orderBy('fecha_actividad', 'desc')->get();
-    $camas = WormBed::all();
-    
-    return view('lombrisoft::bed_activities.index', compact('activities', 'camas'));
-}
-    // Formulario de creación
+
     public function create()
     {
         $camas = WormBed::all();
         return view('lombrisoft::bed_activities.create', compact('camas'));
     }
 
-    // Guardar nueva actividad
     public function store(Request $request)
     {
         $request->validate([
@@ -57,65 +62,133 @@ class BedActivityController extends Controller
             'fecha_actividad' => 'required|date',
         ]);
 
-        if ($request->tipo === 'alimentacion') {
-            $request->validate([
-                'cantidad_alimento' => 'required|integer|min:1',
-                'tipo_alimento' => 'required|string|max:255',
-            ]);
+        // Validaciones específicas
+        switch ($request->tipo) {
+            case 'alimentacion':
+                $request->validate([
+                    'cantidad_alimento' => 'required|integer|min:1',
+                    'tipo_alimento' => 'required|string|max:255',
+                ]);
+                break;
+
+            case 'humedad':
+                $request->validate([
+                    'nivel_humedad' => 'required|numeric|min:0|max:100',
+                ]);
+                break;
+
+            case 'recoleccion':
+                $request->validate([
+                    'tipo_recoleccion' => 'required|in:humus,lixiviado',
+                    'cantidad_recolectada' => 'required|integer|min:1',
+                ]);
+                break;
+
+            case 'ph':
+                $request->validate([
+                    'ph' => 'required|numeric|min:0|max:14',
+                ]);
+                break;
+
+            case 'temperatura':
+                $request->validate([
+                    'temperatura' => 'required|numeric|min:-50|max:50',
+                ]);
+                break;
         }
 
-        if ($request->tipo === 'humedad') {
-            $request->validate([
-                'nivel_humedad' => 'required|numeric|min:0|max:100',
-            ]);
-        }
-
-        if ($request->tipo === 'recoleccion') {
-            $request->validate([
-                'tipo_recoleccion' => 'required|in:humus,lixiviado',
-                'cantidad_recolectada' => 'required|integer|min:1',
-            ]);
-        }
-        if ($request->tipo === 'ph') {
-            $request->validate([
-                'ph' => 'required|numeric|min:0|max:14',
-            ]);
-        }
-        if ($request->tipo === 'temperatura') {
-            $request->validate([
-                'temperatura' => 'required|numeric|min:-50|max:50',
-            ]);
-        }
-
-        // Transacción para evitar inconsistencias
         DB::beginTransaction();
 
         try {
-            $actividad = new BedActivity($request->all());
-            $actividad->tipo_alimento = $request->tipo_alimento ?? null;
-            $actividad->save();
-            
+            // 1. Guardar actividad general
+            $actividad = BedActivity::create([
+                'worm_bed_id' => $request->worm_bed_id,
+                'tipo' => $request->tipo,
+                'descripcion' => $request->descripcion,
+                'fecha_actividad' => $request->fecha_actividad,
+                'hora_actividad' => $request->hora_actividad,
+            ]);
+
+            // 2. Guardar datos específicos según tipo
+            switch ($request->tipo) {
+                case 'alimentacion':
+                    FeedingActivity::create([
+                        'bed_activity_id' => $actividad->id,
+                        'cantidad_alimento' => $request->cantidad_alimento,
+                        'tipo_alimento' => $request->tipo_alimento,
+                    ]);
+                    break;
+
+                case 'humedad':
+                    MoistureActivity::create([
+                        'bed_activity_id' => $actividad->id,
+                        'nivel_humedad' => $request->nivel_humedad,
+                    ]);
+                    break;
+
+                case 'recoleccion':
+                    HarvestActivity::create([
+                        'bed_activity_id' => $actividad->id,
+                        'tipo_recoleccion' => $request->tipo_recoleccion,
+                        'cantidad_recolectada' => $request->cantidad_recolectada,
+                    ]);
+                    break;
+
+                case 'ph':
+                    PhActivity::create([
+                        'bed_activity_id' => $actividad->id,
+                        'ph' => $request->ph,
+                    ]);
+                    break;
+
+                case 'temperatura':
+                    TemperatureActivity::create([
+                        'bed_activity_id' => $actividad->id,
+                        'temperatura' => $request->temperatura,
+                    ]);
+                    break;
+            }
 
             DB::commit();
+
             return redirect()->route('lombrisoft.admin.bed_activities.index')->with('success', 'Actividad registrada correctamente.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
-
-    // Actualizar actividad (opcional: agregar lógica para update de herramientas si quieres)
-    public function update(Request $request, $id)
+    public function show($id)
 {
-    $actividad = BedActivity::findOrFail($id);
-    $actividad->fill($request->all());
-    $actividad->save();
+    $activity = BedActivity::with([
+        'wormBed',
+        'feeding',
+        'moisture',
+        'harvest',
+        'ph',
+        'temperature'
+    ])->findOrFail($id);
 
-    return redirect()->route('lombrisoft.admin.bed_activities.index')
-                     ->with('success', 'Actividad actualizada correctamente');
+    return view('lombrisoft::bed_activities.show', compact('activity'));
 }
 
-    // Eliminar actividad
+
+    public function update(Request $request, $id)
+    {
+        $actividad = BedActivity::findOrFail($id);
+
+        $actividad->fill($request->only([
+            'worm_bed_id',
+            'tipo',
+            'descripcion',
+            'fecha_actividad',
+            'hora_actividad',
+        ]));
+
+        $actividad->save();
+
+        return redirect()->route('lombrisoft.admin.bed_activities.index')->with('success', 'Actividad actualizada correctamente.');
+    }
+
     public function destroy($id)
     {
         $actividad = BedActivity::findOrFail($id);
