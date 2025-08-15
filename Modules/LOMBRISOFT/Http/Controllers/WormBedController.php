@@ -5,21 +5,28 @@ namespace Modules\LOMBRISOFT\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\LOMBRISOFT\Entities\WormBed;
+use Modules\LOMBRISOFT\Entities\ActivityAlert;   // 👉 Importamos alertas para poder contarlas
 
 class WormBedController extends Controller
 {
     public function admin()
     {
-        // 👉 Cargamos las camas para que welcome.blade.php no explote
         $camas = WormBed::all();
+
+        // Contamos alertas próximas/vencidas por cada cama
+        foreach ($camas as $cama) {
+            $cama->alerts_count = ActivityAlert::where('worm_bed_id', $cama->id)
+                ->whereIn('calculated_status', ['vencida', 'proxima'])
+                ->count();
+        }
+
         return view('lombrisoft::welcome', compact('camas'));
     }
+
     public function index()
     {
         $camas = WormBed::all();
-        $activities = []; // Placeholder vacío hasta que tengas el modelo Activity
         return view('lombrisoft::admin.listacamas', compact('camas'));
-
     }
 
     public function create()
@@ -30,14 +37,14 @@ class WormBedController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'numero' => 'required|integer|unique:wormsbeds,number',
-            'estado' => 'required|string',
+            'numero'       => 'required|integer|unique:wormsbeds,number',
+            'estado'       => 'required|string',
             'fecha_inicio' => 'required|date',
         ]);
 
         WormBed::create([
-            'number' => $request->input('numero'),
-            'status' => $request->input('estado'),
+            'number'     => $request->input('numero'),
+            'status'     => $request->input('estado'),
             'start_date' => $request->input('fecha_inicio'),
         ]);
 
@@ -62,14 +69,14 @@ class WormBedController extends Controller
         $cama = WormBed::findOrFail($id);
 
         $request->validate([
-            'numero' => 'required|integer|unique:wormsbeds,number,' . $cama->id,
-            'estado' => 'required|string',
+            'numero'       => 'required|integer|unique:wormsbeds,number,' . $cama->id,
+            'estado'       => 'required|string',
             'fecha_inicio' => 'required|date',
         ]);
 
         $cama->update([
-            'number' => $request->input('numero'),
-            'status' => $request->input('estado'),
+            'number'     => $request->input('numero'),
+            'status'     => $request->input('estado'),
             'start_date' => $request->input('fecha_inicio'),
         ]);
 

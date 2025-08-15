@@ -7,6 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{{ asset('images/Favicon2.png')}}" type="image/x-icon">
     <title>Gestion de Unidad de Lombricultivo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="{{ asset('AdminLTE/https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback') }}">
     <!-- Font Awesome -->
@@ -206,49 +210,52 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                   <a class="nav-link" href="{{ route('reports.index') }}">
+                                    <a class="nav-link" href="{{ route('reports.index') }}">
                                         <i class="fas fa-tasks nav-icon text-green"></i>
                                         <p>Historial</p>
                                     </a>
                                 </li>
-                            
+
                             </ul>
                         </li>
                         <li class="nav-item has-treeview">
-    <a href="#" class="nav-link">
-        <i class="nav-icon fas fa-bell text-orange"></i>
-        <p>
-            Alertas
-            <i class="right fas fa-angle-left"></i>
-        </p>
-    </a>
-    <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a href="{{ route('lombrisoft.admin.activity_alerts.create') }}" class="nav-link">
-                <i class="fas fa-plus-circle nav-icon text-orange"></i>
-                <p>Nueva Alerta</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('lombrisoft.admin.activity_alerts.index') }}" class="nav-link">
-                <i class="fas fa-list nav-icon text-orange"></i>
-                <p>Lista de Alertas</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('lombrisoft.admin.activity_alerts.index', ['estado' => 'vencidas']) }}" class="nav-link">
-                <i class="fas fa-exclamation-triangle nav-icon text-red"></i>
-                <p>Alertas Vencidas</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('lombrisoft.admin.activity_alerts.index', ['estado' => 'proximas']) }}" class="nav-link">
-                <i class="fas fa-clock nav-icon text-yellow"></i>
-                <p>Alertas Próximas</p>
-            </a>
-        </li>
-    </ul>
-</li>
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-bell text-orange"></i>
+                                <p>
+                                    Alertas
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('lombrisoft.admin.activity_alerts.create') }}" class="nav-link">
+                                        <i class="fas fa-plus-circle nav-icon text-orange"></i>
+                                        <p>Nueva Alerta</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('lombrisoft.admin.activity_alerts.index') }}" class="nav-link">
+                                        <i class="fas fa-list nav-icon text-orange"></i>
+                                        <p>Lista de Alertas</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('lombrisoft.admin.activity_alerts.index', ['estado' => 'vencidas']) }}" class="nav-link">
+                                        <i class="fas fa-exclamation-triangle nav-icon text-red"></i>
+                                        <p>Alertas Vencidas</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('lombrisoft.admin.activity_alerts.index', ['estado' => 'proximas']) }}" class="nav-link">
+                                        <i class="fas fa-clock nav-icon text-yellow"></i>
+                                        <p>Alertas Próximas</p>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </li>
+
+
                     </ul>
                 </nav>
             </div>
@@ -282,6 +289,8 @@
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>
+
+
     <!-- Bootstrap 4 -->
     <script src="{{ asset('AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- overlayScrollbars -->
