@@ -9,6 +9,9 @@ use Modules\LOMBRISOFT\Entities\WormBed;
 use Modules\LOMBRISOFT\Entities\BedActivity;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Modules\LOMBRISOFT\Emails\PendingAlertsMail;
+
 
 class ActivityAlertController extends Controller
 {
@@ -231,4 +234,29 @@ class ActivityAlertController extends Controller
 
         return response()->json(['alerts' => $alerts, 'count' => $alerts->count()]);
     }
+   public function sendPendingAlertsEmail()
+{
+    $camas = WormBed::all();
+
+    foreach ($camas as $cama) {
+        // Filtrar actividades vencidas
+        $activities = BedActivity::where('worm_bed_id', $cama->id)
+            ->get()
+            ->filter(function ($activity) {
+                $nextExpected = Carbon::parse($activity->fecha_actividad)
+                    ->addDays($activity->frequency_days ?? 0);
+                return $nextExpected->lt(Carbon::today());
+            });
+
+        if ($activities->isNotEmpty()) {
+            // Enviar correo solo si hay actividades vencidas
+            Mail::to('ardilanicolas71@gmail.com')
+                ->send(new AlertaCamaVencida($cama, $activities));
+        }
+    }
+
+    return response()->json(['message' => 'Se enviaron las alertas solo a camas con actividades vencidas.']);
+}
+
+
 }

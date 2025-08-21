@@ -362,6 +362,27 @@ $permissions_admin[] = Permission::updateOrCreate(
         'app_id' => $app->id,
     ]
 )->id;
+$permissions_admin[] = Permission::updateOrCreate(
+    ['slug' => 'lombrisoft.admin.activity_alerts.send'],
+    [
+        'name' => 'Enviar alertas pendientes',
+        'description' => 'Permite enviar alertas pendientes por correo',
+        'description_english' => 'Allows sending pending alerts by email',
+        'app_id' => $app->id,
+    ]
+)->id;
+
+$permissions_admin[] = Permission::updateOrCreate(
+    ['slug' => 'lombrisoft.admin.activity_alerts.send-pending'],
+    [
+        'name' => 'Enviar alertas vencidas',
+        'description' => 'Permite enviar alertas vencidas por correo',
+        'description_english' => 'Allows sending overdue alerts by email',
+        'app_id' => $app->id,
+    ]
+)->id;
+
+
 
 
 

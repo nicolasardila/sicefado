@@ -335,7 +335,7 @@
     <script>
         $(document).ready(function() {
             function loadAlerts() {
-                $.getJSON('{{ route("alerts.pending") }}', function(data) {
+                $.getJSON('{{ route("lombrisoft.admin.activity_alerts.send") }}', function(data) {
                     $('#alert-count').text(data.count);
                     var alertList = $('#alert-list');
                     alertList.empty();

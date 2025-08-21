@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('pqrs:update-state')->daily();
+         $schedule->command('lombrisoft:alertas-camas')->dailyAt('08:00');
         // $schedule->command('inspire')->hourly();
     }
 
@@ -30,5 +31,7 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
+       
     }
+    
 }
