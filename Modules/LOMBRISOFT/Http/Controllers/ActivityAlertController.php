@@ -8,17 +8,30 @@ use Modules\LOMBRISOFT\Entities\ActivityAlert;
 use Modules\LOMBRISOFT\Entities\WormBed;
 use Modules\LOMBRISOFT\Entities\BedActivity;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ActivityAlertController extends Controller
 {
     public function index(Request $request)
     {
-        $alerts = ActivityAlert::with('wormBed')
-            ->orderBy('worm_bed_id')
-            ->orderBy('activity_type')
-            ->get();
-
-        foreach ($alerts as $alert) {
+        // Consulta base con relaciones
+        $query = ActivityAlert::with('wormBed');
+        
+        // Filtrar por tipo de actividad
+        if ($request->filled('tipo')) {
+            $query->where('activity_type', $request->tipo);
+        }
+        
+        // Filtrar por cama
+        if ($request->filled('cama_id')) {
+            $query->where('worm_bed_id', $request->cama_id);
+        }
+        
+        // Obtener todas las alertas para procesamiento
+        $allAlerts = $query->orderBy('worm_bed_id')->orderBy('activity_type')->get();
+        
+        // Procesar cada alerta para calcular estados
+        foreach ($allAlerts as $alert) {
             // 1) Buscar última actividad registrada
             $lastActivity = BedActivity::where('worm_bed_id', $alert->worm_bed_id)
                 ->where('tipo', $alert->activity_type)
@@ -49,24 +62,28 @@ class ActivityAlertController extends Controller
             }
         }
 
-        // 3) Filtros
+        // 3) Aplicar filtro de estado si existe
         if ($request->filled('estado')) {
             if ($request->estado == 'vencidas') {
-                $alerts = $alerts->where('calculated_status', 'vencida');
+                $allAlerts = $allAlerts->where('calculated_status', 'vencida');
             } elseif ($request->estado == 'proximas') {
-                $alerts = $alerts->where('calculated_status', 'proxima');
+                $allAlerts = $allAlerts->where('calculated_status', 'proxima');
+            } elseif ($request->estado == 'activas') {
+                $allAlerts = $allAlerts->where('is_active', true);
+            } elseif ($request->estado == 'inactivas') {
+                $allAlerts = $allAlerts->where('is_active', false);
             }
         }
 
-        // Si deseas mantener paginación después del filtro:
-        $alerts = $alerts->values();   // reindexar
-        $perPage = 10;
+        // Paginación manual
         $page = $request->get('page', 1);
+        $perPage = 10;
+        $alerts = $allAlerts->slice(($page - 1) * $perPage, $perPage)->all();
         $alerts = new \Illuminate\Pagination\LengthAwarePaginator(
-            $alerts->forPage($page, $perPage),
-            $alerts->count(),
-            $perPage,
-            $page,
+            $alerts, 
+            $allAlerts->count(), 
+            $perPage, 
+            $page, 
             ['path' => $request->url(), 'query' => $request->query()]
         );
 
@@ -75,6 +92,7 @@ class ActivityAlertController extends Controller
         return view('lombrisoft::activity_alerts.index', compact('alerts', 'camas'));
     }
 
+    // El resto de tus métodos se mantienen igual...
     public function create()
     {
         $wormBeds = WormBed::all();
@@ -171,5 +189,46 @@ class ActivityAlertController extends Controller
 
         return redirect()->route('lombrisoft.admin.activity_alerts.index')
             ->with('success', 'Alerta eliminada exitosamente');
+    }
+    
+    public function getPendingAlerts()
+    {
+        $alerts = ActivityAlert::with('wormBed')
+            ->get()
+            ->map(function ($alert) {
+                // Calcular última actividad y próxima ejecución
+                $lastActivity = BedActivity::where('worm_bed_id', $alert->worm_bed_id)
+                    ->where('tipo', $alert->activity_type)
+                    ->orderBy('fecha_actividad', 'desc')
+                    ->first();
+
+                if ($lastActivity) {
+                    $alert->last_execution = Carbon::parse($lastActivity->fecha_actividad);
+                    $alert->next_expected = $alert->last_execution->copy()->addDays($alert->frequency_days);
+                } else {
+                    $alert->last_execution = null;
+                    $alert->next_expected = null;
+                }
+
+                // Calcular estado dinámico
+                if ($alert->next_expected) {
+                    $today = Carbon::today();
+                    if ($alert->next_expected->lt($today)) {
+                        $alert->calculated_status = 'vencida';
+                    } elseif ($alert->next_expected->between($today, $today->copy()->addDays($alert->warning_days))) {
+                        $alert->calculated_status = 'proxima';
+                    } else {
+                        $alert->calculated_status = 'activa';
+                    }
+                } else {
+                    $alert->calculated_status = 'activa';
+                }
+
+                return $alert;
+            })
+            ->where('calculated_status', 'proxima')
+            ->values(); // Reindexar el array
+
+        return response()->json(['alerts' => $alerts, 'count' => $alerts->count()]);
     }
 }
