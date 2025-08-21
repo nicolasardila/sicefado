@@ -107,18 +107,18 @@
                                 </form>
                                 <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#viewModal"
     data-id="{{ $activity->id }}"
-    data-tipo="{{ $activity->tipo }}"
-    data-cama="Cama N° {{ $activity->wormBed->number }}"
-    data-fecha="{{ $activity->fecha_actividad }}"
-    data-hora="{{ $activity->hora_actividad }}"
-    data-descripcion="{{ $activity->descripcion ?? 'Sin descripción' }}"
-    data-cantidad-alimento="{{ $activity->cantidad_alimento ?? 'N/A' }}"
-    data-tipo-alimento="{{ $activity->tipo_alimento ?? 'N/A' }}"
-    data-nivel-humedad="{{ $activity->nivel_humedad ?? 'N/A' }}"
-    data-tipo-recoleccion="{{ $activity->tipo_recoleccion ?? 'N/A' }}"
-    data-cantidad-recolectada="{{ $activity->cantidad_recolectada ?? 'N/A' }}"
-    data-ph="{{ $activity->ph ?? 'N/A' }}"
-    data-temperatura="{{ $activity->temperatura ?? 'N/A' }}">
+                                data-tipo="{{ $activity->tipo }}"
+                                data-cama="{{ $activity->worm_bed_id }}"
+                                data-fecha="{{ $activity->fecha_actividad }}"
+                                data-hora="{{ $activity->hora_actividad }}"
+                                data-descripcion="{{ $activity->descripcion ?? '' }}"
+                                data-cantidad-alimento="{{ $activity->feeding->cantidad_alimento ?? '' }}"
+                                data-tipo-alimento="{{ $activity->feeding->tipo_alimento ?? '' }}"
+                                data-nivel-humedad="{{ $activity->moisture->nivel_humedad ?? '' }}"
+                                data-tipo-recoleccion="{{ $activity->harvest->tipo_recoleccion ?? '' }}"
+                                data-cantidad-recolectada="{{ $activity->harvest->cantidad_recolectada ?? '' }}"
+                                data-ph="{{ $activity->ph->ph ?? '' }}"
+                                data-temperatura="{{ $activity->temperature->temperatura ?? '' }}">
     <i class="fas fa-eye"></i> Ver
 </button>
 

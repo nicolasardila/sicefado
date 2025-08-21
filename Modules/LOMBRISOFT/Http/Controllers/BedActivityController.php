@@ -173,21 +173,64 @@ class BedActivityController extends Controller
 
 
     public function update(Request $request, $id)
-    {
-        $actividad = BedActivity::findOrFail($id);
+{
+    $actividad = BedActivity::findOrFail($id);
 
-        $actividad->fill($request->only([
-            'worm_bed_id',
-            'tipo',
-            'descripcion',
-            'fecha_actividad',
-            'hora_actividad',
-        ]));
+    $actividad->update([
+        'worm_bed_id' => $request->worm_bed_id,
+        'tipo' => $request->tipo,
+        'descripcion' => $request->descripcion,
+        'fecha_actividad' => $request->fecha_actividad,
+        'hora_actividad' => $request->hora_actividad,
+    ]);
 
-        $actividad->save();
+    // Actualizar o crear datos específicos
+    switch ($actividad->tipo) {
+        case 'alimentacion':
+            $actividad->feeding()->updateOrCreate(
+                ['bed_activity_id' => $actividad->id],
+                [
+                    'cantidad_alimento' => $request->cantidad_alimento,
+                    'tipo_alimento' => $request->tipo_alimento,
+                ]
+            );
+            break;
 
-        return redirect()->route('lombrisoft.admin.bed_activities.index')->with('success', 'Actividad actualizada correctamente.');
+        case 'humedad':
+            $actividad->moisture()->updateOrCreate(
+                ['bed_activity_id' => $actividad->id],
+                ['nivel_humedad' => $request->nivel_humedad]
+            );
+            break;
+
+        case 'recoleccion':
+            $actividad->harvest()->updateOrCreate(
+                ['bed_activity_id' => $actividad->id],
+                [
+                    'tipo_recoleccion' => $request->tipo_recoleccion,
+                    'cantidad_recolectada' => $request->cantidad_recolectada
+                ]
+            );
+            break;
+
+        case 'ph':
+            $actividad->ph()->updateOrCreate(
+                ['bed_activity_id' => $actividad->id],
+                ['ph' => $request->ph]
+            );
+            break;
+
+        case 'temperatura':
+            $actividad->temperature()->updateOrCreate(
+                ['bed_activity_id' => $actividad->id],
+                ['temperatura' => $request->temperatura]
+            );
+            break;
     }
+
+    return redirect()->route('lombrisoft.admin.bed_activities.index')
+        ->with('success', 'Actividad actualizada correctamente');
+}
 
     public function destroy($id)
     {
