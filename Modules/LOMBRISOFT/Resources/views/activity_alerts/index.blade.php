@@ -52,7 +52,7 @@
                         <div class="col-md-4">
                             <label for="filter_cama" class="form-label">Cama</label>
                             <select class="form-select" id="filter_cama" name="cama_id">
-                                <option value="">Todas</option>
+                                <option value="">Todas las camas</option>
                                 @foreach($camas as $cama)
                                     <option value="{{ $cama->id }}" {{ request('cama_id') == $cama->id ? 'selected' : '' }}>
                                         Cama N° {{ $cama->number }}
@@ -79,6 +79,23 @@
         <div class="card shadow-lg rounded">
             <div class="card-header bg-success text-white text-center">
                 <h4>Listado de Alertas de Actividades</h4>
+                @if(request()->has('tipo') || request()->has('estado') || request()->has('cama_id'))
+                    <p class="mb-0">
+                        Filtros aplicados: 
+                        @if(request('tipo'))
+                            <span class="badge bg-info">Tipo: {{ ucfirst(request('tipo')) }}</span>
+                        @endif
+                        @if(request('estado'))
+                            <span class="badge bg-info">Estado: {{ ucfirst(request('estado')) }}</span>
+                        @endif
+                        @if(request('cama_id'))
+                            @php
+                                $selectedCama = $camas->firstWhere('id', request('cama_id'));
+                            @endphp
+                            <span class="badge bg-info">Cama: {{ $selectedCama ? 'N° ' . $selectedCama->number : 'Desconocida' }}</span>
+                        @endif
+                    </p>
+                @endif
             </div>
             <div class="card-body">
                 <div class="table-responsive">

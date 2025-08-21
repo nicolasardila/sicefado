@@ -49,4 +49,9 @@ Route::prefix('admin/activity-alerts')->group(function () {
     Route::get('/{id}/edit', [ActivityAlertController::class, 'edit'])->name('lombrisoft.admin.activity_alerts.edit');
     Route::put('/{id}', [ActivityAlertController::class, 'update'])->name('lombrisoft.admin.activity_alerts.update');
     Route::delete('/{id}', [ActivityAlertController::class, 'destroy'])->name('lombrisoft.admin.activity_alerts.destroy');
+    
 });
+Route::middleware(['web'])->group(function () {
+    Route::get('alerts/pending', [ActivityAlertController::class, 'getPendingAlerts'])->name('alerts.pending');
+});
+

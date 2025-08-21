@@ -19,8 +19,7 @@
     <link rel="stylesheet" href="{{ asset('AdminLTE/dist/css/adminlte.min.css') }}">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{ asset('AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-    <!-- Asegúrate de tener esto en tu layout principal (por ejemplo, en el footer o antes de cerrar el body) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 5 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -101,6 +100,16 @@
         .bg-primary {
             background-color: var(--sena-green) !important;
         }
+
+        .navbar-badge {
+            font-size: 0.8rem;
+            padding: 2px 6px;
+        }
+
+        .dropdown-item {
+            white-space: normal;
+            /* Permite que el texto se ajuste si es largo */
+        }
     </style>
 </head>
 
@@ -120,6 +129,27 @@
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" id="alertsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge bg-warning navbar-badge" id="alert-count">0</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end" aria-labelledby="alertsDropdown">
+                        <li>
+                            <h6 class="dropdown-header">Alertas por Vencer</h6>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li id="alert-list">
+                            <a class="dropdown-item text-center">Cargando alertas...</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+
+
                 <li class="nav-item">
                     <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="fas fa-sign-out-alt"></i> {{ __('Cerrar Sesión') }}
@@ -129,7 +159,6 @@
                     </form>
                 </li>
             </ul>
-
         </nav>
 
         <aside class="main-sidebar sidebar-light-primary elevation-4">
@@ -140,13 +169,10 @@
             </a>
 
             <div class="sidebar">
-                <!-- Sidebar user panel -->
-
-
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{ route('lombrisoft.admin.welcome') }}" class=" nav-link">
+                            <a href="{{ route('lombrisoft.admin.welcome') }}" class="nav-link">
                                 <i class="nav-icon fas fa-home text-green"></i>
                                 <p>Inicio</p>
                             </a>
@@ -215,7 +241,6 @@
                                         <p>Historial</p>
                                     </a>
                                 </li>
-
                             </ul>
                         </li>
                         <li class="nav-item has-treeview">
@@ -252,10 +277,7 @@
                                     </a>
                                 </li>
                             </ul>
-
                         </li>
-
-
                     </ul>
                 </nav>
             </div>
@@ -289,10 +311,8 @@
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>
-
-
-    <!-- Bootstrap 4 -->
-    <script src="{{ asset('AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="{{ asset('AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- AdminLTE App -->
@@ -309,6 +329,40 @@
     <script src="{{ asset('AdminLTE/dist/js/demo.js') }}"></script>
     <!-- AdminLTE dashboard demo -->
     <script src="{{ asset('AdminLTE/dist/js/pages/dashboard2.js') }}"></script>
+
+    <!-- Agrega Moment.js -->
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function loadAlerts() {
+                $.getJSON('{{ route("alerts.pending") }}', function(data) {
+                    $('#alert-count').text(data.count);
+                    var alertList = $('#alert-list');
+                    alertList.empty();
+
+                    if (data.count > 0) {
+                        data.alerts.forEach(function(alert) {
+                            var nextDate = alert.next_expected ? moment(alert.next_expected).format('DD/MM/YYYY') : 'Sin fecha';
+                            alertList.append(
+                                '<a href="#" class="dropdown-item">' +
+                                '<i class="fas fa-exclamation-triangle me-2"></i> ' + alert.wormBed.nombre + ' - ' + alert.activity_type +
+                                '<span class="float-end text-muted">' + nextDate + '</span>' +
+                                '</a>'
+                            );
+                        });
+                    } else {
+                        alertList.append('<a class="dropdown-item text-center">No hay alertas por vencer</a>');
+                    }
+                }).fail(function() {
+                    $('#alert-count').text('0');
+                    $('#alert-list').html('<a class="dropdown-item text-center">Error al cargar</a>');
+                });
+            }
+
+            loadAlerts();
+            setInterval(loadAlerts, 300000); // 5 min
+        });
+    </script>
 </body>
 
 </html>
