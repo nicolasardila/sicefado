@@ -40,39 +40,51 @@
                         </div>
                     @else
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped">
-                                <thead class="table-dark text-center">
-                                    <tr>
-                                        <th>Número de Cama</th>
-                                        <th>Estado</th>
-                                        <th>Fecha de Inicio</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($camas as $cama)
-                                    <tr>
-                                        <td>{{ $cama->number }}</td>
-                                        <td>{{ $cama->status }}</td>
-                                        <td>{{ $cama->start_date }}</td>
-                                        <td class="text-center">
-                                            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#editModal"
-                                                data-id="{{ $cama->id }}"
-                                                data-number="{{ $cama->number }}"
-                                                data-status="{{ $cama->status }}"
-                                                data-start_date="{{ $cama->start_date }}">
-                                                Editar
-                                            </button>
-                                            <form action="{{ route('lombrisoft.admin.camas.destroy', $cama->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-sm btn-danger" onclick="confirmarEliminacion(this)">Eliminar</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+    <table class="table table-bordered table-striped table-hover align-middle">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>Número de Cama</th>
+                <th>Estado</th>
+                <th>Fecha de Inicio</th>
+                <th style="width: 140px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($camas as $cama)
+            <tr>
+                <td>{{ $cama->number }}</td>
+                <td>{{ $cama->status }}</td>
+                <td>{{ $cama->start_date }}</td>
+                <td class="text-center">
+                    <button type="button"
+                            class="btn btn-sm btn-outline-success me-1"
+                            data-bs-toggle="modal" 
+                            data-bs-target="#editModal"
+                            data-id="{{ $cama->id }}"
+                            data-number="{{ $cama->number }}"
+                            data-status="{{ $cama->status }}"
+                            data-start_date="{{ $cama->start_date }}"
+                            title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+
+                    <form action="{{ route('lombrisoft.admin.camas.destroy', $cama->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" 
+                                class="btn btn-sm btn-outline-danger" 
+                                onclick="confirmarEliminacion(this)"
+                                title="Eliminar">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
                         </div>
                     @endif
                 </div>

@@ -1,10 +1,6 @@
 @extends('lombrisoft::layouts.master')
 
 @section('content')
-<div class="container mt-5">
-    <div class="mb-3 text-end">
-        <a href="{{ route('lombrisoft.admin.bed_activities.create') }}" class="btn btn-primary">Registrar Nueva Actividad</a>
-    </div>
 
     @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -52,11 +48,12 @@
             </div>
             
             <div class="row mt-3">
-                <div class="col-md-12 text-end">
-                    <button type="submit" class="btn btn-success me-2">
+             <div class="col-md-12 text-end">
+                   <a href="{{ route('lombrisoft.admin.bed_activities.create') }}" class="btn btn-primary">Registrar Nueva Actividad</a>
+                       <button type="submit" class="btn btn-success me-2">
                         <i class="fas fa-filter"></i> Filtrar
-                    </button>
-                    <a href="{{ route('lombrisoft.admin.bed_activities.index') }}" class="btn btn-secondary">
+                       </button>
+                     <a href="{{ route('lombrisoft.admin.bed_activities.index') }}" class="btn btn-secondary">
                         <i class="fas fa-times"></i> Limpiar
                     </a>
                 </div>
@@ -65,26 +62,29 @@
     </div>
 </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <thead class="table-dark text-center">
-                        <tr>
-                            <th>Cama</th>
-                            <th>Tipo</th>
-                            <th>Fecha</th>
-                            <th>Hora</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($activities as $activity)
-                        <tr>
-                            <td>Cama N° {{ $activity->wormBed->number }}</td>
-                            <td>{{ ucfirst($activity->tipo) }}</td>
-                            <td>{{ $activity->fecha_actividad }}</td>
-                            <td>{{ $activity->hora_actividad ?? '-' }}</td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#editModal"
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover align-middle">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Cama</th>
+                    <th>Tipo</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th style="width: 180px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($activities as $activity)
+                <tr>
+                    <td>Cama N° {{ $activity->wormBed->number }}</td>
+                    <td>{{ ucfirst($activity->tipo) }}</td>
+                    <td>{{ $activity->fecha_actividad }}</td>
+                    <td>{{ $activity->hora_actividad ?? '-' }}</td>
+                    <td class="text-center">
+                        <button type="button" 
+                                class="btn btn-sm btn-outline-success me-1" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#editModal"
                                 data-id="{{ $activity->id }}"
                                 data-tipo="{{ $activity->tipo }}"
                                 data-cama="{{ $activity->worm_bed_id }}"
@@ -97,16 +97,27 @@
                                 data-tipo-recoleccion="{{ $activity->harvest->tipo_recoleccion ?? '' }}"
                                 data-cantidad-recolectada="{{ $activity->harvest->cantidad_recolectada ?? '' }}"
                                 data-ph="{{ $activity->ph->ph ?? '' }}"
-                                data-temperatura="{{ $activity->temperature->temperatura ?? '' }}">
-                                Editar
+                                data-temperatura="{{ $activity->temperature->temperatura ?? '' }}"
+                                title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+
+                        <form action="{{ route('lombrisoft.admin.bed_activities.destroy', $activity->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" 
+                                    class="btn btn-sm btn-outline-danger me-1" 
+                                    onclick="confirmarEliminacion(this)"
+                                    title="Eliminar">
+                                <i class="fas fa-trash-alt"></i>
                             </button>
-                                <form action="{{ route('lombrisoft.admin.bed_activities.destroy', $activity->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="confirmarEliminacion(this)">Eliminar</button>
-                                </form>
-                                <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#viewModal"
-    data-id="{{ $activity->id }}"
+                        </form>
+
+                        <button type="button" 
+                                class="btn btn-sm btn-outline-info" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#viewModal"
+                                data-id="{{ $activity->id }}"
                                 data-tipo="{{ $activity->tipo }}"
                                 data-cama="{{ $activity->worm_bed_id }}"
                                 data-fecha="{{ $activity->fecha_actividad }}"
@@ -118,15 +129,15 @@
                                 data-tipo-recoleccion="{{ $activity->harvest->tipo_recoleccion ?? '' }}"
                                 data-cantidad-recolectada="{{ $activity->harvest->cantidad_recolectada ?? '' }}"
                                 data-ph="{{ $activity->ph->ph ?? '' }}"
-                                data-temperatura="{{ $activity->temperature->temperatura ?? '' }}">
-    <i class="fas fa-eye"></i> Ver
-</button>
-
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                data-temperatura="{{ $activity->temperature->temperatura ?? '' }}"
+                                title="Ver detalles">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
             </div>
         </div>
     </div>
@@ -136,7 +147,7 @@
 <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-info text-white">
+            <div class="modal-header bg-success text-white">
                 <h5 class="modal-title" id="viewModalLabel">Detalles Completos de la Actividad</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
