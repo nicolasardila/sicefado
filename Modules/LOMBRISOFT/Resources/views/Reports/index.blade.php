@@ -2,9 +2,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <div class="mb-3 text-end">
-        <a href="{{ route('reports.pdf', request()->query()) }}" class="btn btn-danger">Descargar PDF</a>
-    </div>
+
 
     <div class="card mb-4">
         <div class="card-header bg-success text-white">
@@ -57,9 +55,19 @@
                                 </select>
                             </div>
                        
-                            <div class="col-md-2 d-flex align-items-end">
-                                <button type="submit" class="btn btn-success w-100" id="filtrarBtn">Filtrar</button>
-                            </div>
+<div class="col-md-2 d-flex flex-column gap-2">
+    <button type="submit" class="btn btn-success w-100" id="filtrarBtn">
+        <i class="fas fa-filter me-1"></i> Filtrar
+    </button>
+    <a href="{{ route('reports.pdf', request()->query()) }}" 
+       class="btn btn-danger w-100" 
+       role="button" 
+       target="_blank" 
+       rel="noopener">
+       <i class="fas fa-file-pdf me-1"></i> Descargar PDF
+    </a>
+</div>
+
                         </div>
                     </div>
                 </div>
